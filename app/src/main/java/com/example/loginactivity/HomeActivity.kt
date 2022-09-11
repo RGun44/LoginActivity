@@ -8,10 +8,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import com.example.ugd3.DaerahFragment
-import com.example.ugd3.fragment.DashboardFragment
-import com.example.ugd3.fragment.InfoFragment
-import com.example.ugd3.fragment.SettingsFragment
+import com.example.loginactivity.DaerahFragment
+import com.example.loginactivity.fragment.DashboardFragment
+import com.example.loginactivity.fragment.InfoFragment
+import com.example.loginactivity.fragment.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity() {
