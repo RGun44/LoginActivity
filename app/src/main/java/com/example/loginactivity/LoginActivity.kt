@@ -35,9 +35,6 @@ class LoginActivity : AppCompatActivity() {
         val btnRegistrasi = findViewById<Button>(R.id.btnRegistrasi)
 
         btnRegistrasi.setOnClickListener {
-            inputUsername.getEditText()?.setText("")
-            inputPassword.getEditText()?.setText("")
-
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
