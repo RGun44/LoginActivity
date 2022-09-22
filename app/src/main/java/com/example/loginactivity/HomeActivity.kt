@@ -22,19 +22,23 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        replaceFragment(dashboardFragment)
 
-        changeFragment(DaerahFragment())
-
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
-        bottomNav.setOnNavigationItemSelectedListener {
-            when(it.itemId) {
-                R.id.ic_dashboard -> replaceFragment(dashboardFragment)
-                R.id.ic_info -> replaceFragment(infoFragment)
-                R.id.ic_settings -> replaceFragment(settingsFragment)
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.ic_dashboard -> {
+                    // Respond to navigation item 1 click
+                    true
+                }
+                R.id.ic_info -> {
+                    // Respond to navigation item 2 click
+                    true
+                }
+                R.id.ic_settings -> {
+                    // Respond to navigation item 2 click
+                    true
+                }
+                else -> false
             }
-            true
         }
     }
 
@@ -56,22 +60,5 @@ class HomeActivity : AppCompatActivity() {
                 .show()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun replaceFragment(fragment : Fragment) {
-        if (fragment != null){
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, fragment)
-            transaction.commit()
-        }
-    }
-
-    fun changeFragment(fragment: Fragment?){
-        if(fragment != null) {
-            getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.layout_fragment, fragment)
-                .commit()
-        }
     }
 }
