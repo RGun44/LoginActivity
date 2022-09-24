@@ -7,17 +7,9 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
-import com.example.loginactivity.DaerahFragment
-import com.example.loginactivity.fragment.DashboardFragment
-import com.example.loginactivity.fragment.InfoFragment
-import com.example.loginactivity.fragment.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity() {
-    private val dashboardFragment = DashboardFragment()
-    private val infoFragment = InfoFragment()
-    private val settingsFragment = SettingsFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +21,11 @@ class HomeActivity : AppCompatActivity() {
                     // Respond to navigation item 1 click
                     true
                 }
-                R.id.ic_info -> {
+                R.id.ic_profile -> {
                     // Respond to navigation item 2 click
                     true
                 }
-                R.id.ic_settings -> {
+                R.id.ic_info -> {
                     // Respond to navigation item 2 click
                     true
                 }
