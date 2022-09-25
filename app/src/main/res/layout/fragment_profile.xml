@@ -9,7 +9,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
-        android:layout_height="240dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
@@ -18,7 +18,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="20dp">
 
         <ImageView
             android:id="@+id/imageView5"
@@ -48,6 +49,35 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="150dp"
             android:text="E-mail"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/tvphonenumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="180dp"
+            android:text="Phonenumber"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/tvbirthdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="210dp"
+            android:text="Birthdate"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvpassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="240dp"
+            android:text="Password"
             android:textSize="16sp" />
 
         <Button
@@ -56,7 +86,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:backgroundTint="#7FB77E"
-            android:layout_marginTop="180dp"
+            android:layout_marginTop="270dp"
+            android:layout_marginBottom="20dp"
             android:text="Edit Profile" />
 
     </androidx.cardview.widget.CardView>
