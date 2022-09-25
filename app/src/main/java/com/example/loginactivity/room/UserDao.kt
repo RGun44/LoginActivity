@@ -11,10 +11,10 @@ interface UserDao {
     fun updateUser(user: User)
 
     @Delete
-    fun deleteUser(user: UserDB)
+    fun deleteUser(user: User)
 
     @Query("SELECT * FROM user")
-    fun getUser() : List<User>
+    fun getUsers(): List<User>
 
     @Query("SELECT * FROM user WHERE id =:register_id")
     fun getUser(register_id: Int) : User
