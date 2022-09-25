@@ -1,14 +1,20 @@
 package com.example.loginactivity
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.loginactivity.room.User
+import com.example.loginactivity.room.UserDB
 import com.google.android.material.snackbar.Snackbar
+import android.content.SharedPreferences
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
+    val db by lazy{ UserDB(this) }
     private lateinit var inputUsername : TextInputLayout
     private lateinit var inputPassword : TextInputLayout
     private lateinit var mainLayout : ConstraintLayout
@@ -16,6 +22,7 @@ class LoginActivity : AppCompatActivity() {
 
     lateinit var vUsername: String
     lateinit var vPassword: String
+    var sharedPreferences:SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,11 +60,24 @@ class LoginActivity : AppCompatActivity() {
                 inputPassword.setError("Password must be filled with text")
                 checkLogin = false
             }
-            if(username == "admin" && password == "0557") checkLogin = true
-            else {
-                Snackbar.make(mainLayout, "Username or Password is incorrect", Snackbar.LENGTH_SHORT).show()
-            }
 
+            val UserDB: User = db.userDao().getUser(username, password)
+
+            if (UserDB != null) {
+                sharedPreferences = this.getSharedPreferences("login", Context.MODE_PRIVATE)
+                var editor = sharedPreferences?.edit()
+                editor?.putString("id", UserDB.id.toString())
+                editor?.commit()
+                val moveMenu = Intent(this, HomeActivity::class.java)
+                startActivity(moveMenu)
+            } else {
+                Snackbar.make(
+                    mainLayout,
+                    "Username or Password incorrect",
+                    Snackbar.LENGTH_LONG
+                ).show()
+                return@OnClickListener
+            }
             if(!checkLogin)return@OnClickListener
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
