@@ -5,16 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
+
 @Database(
-    entities = [User::class],
+    entities = [Paket::class],
     version = 1
 )
 
-abstract class UserDB: RoomDatabase() {
-    abstract fun paketDao(): PaketDao
-
+abstract class PaketDB:  RoomDatabase() {
+    abstract fun paketDao() : PaketDao
     companion object {
-        @Volatile private var instance : UserDB? = null
+        @Volatile private var instance : PaketDB? = null
         private val LOCK = Any()
         operator fun invoke(context: Context) = instance ?:
         synchronized(LOCK){
@@ -25,8 +25,8 @@ abstract class UserDB: RoomDatabase() {
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
-                UserDB::class.java,
-                "user.db"
-            ).build()
+                PaketDB::class.java,
+                "paket.db"
+            ).allowMainThreadQueries().build()
     }
 }

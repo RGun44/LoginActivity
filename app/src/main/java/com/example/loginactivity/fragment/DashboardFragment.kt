@@ -19,21 +19,6 @@ class DashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_daerah, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val layoutManager = LinearLayoutManager(context)
-        val adapter : RVDaerahAdapter = RVDaerahAdapter(Daerah.listOfDaerah)
-
-        val rvDaerah : RecyclerView = view.findViewById(R.id.rv_daerah)
-
-        rvDaerah.layoutManager = layoutManager
-
-        rvDaerah.setHasFixedSize(true)
-
-        rvDaerah.adapter = adapter
-
+        return inflater.inflate(R.layout.fragment_paket, container, false)
     }
 }

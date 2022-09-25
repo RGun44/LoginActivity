@@ -7,32 +7,37 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.fragment.app.Fragment
+import com.example.loginactivity.databinding.ActivityHomeBinding
+import com.example.loginactivity.fragment.DashboardFragment
+import com.example.loginactivity.fragment.InfoFragment
+import com.example.loginactivity.fragment.Profile_Fragment
+import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        setCurrentFragment(DashboardFragment())
 
-        BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.ic_dashboard -> {
-                    // Respond to navigation item 1 click
-                    true
-                }
-                R.id.ic_profile -> {
-                    // Respond to navigation item 2 click
-                    true
-                }
-                R.id.ic_info -> {
-                    // Respond to navigation item 2 click
-                    true
-                }
-                else -> false
+        bottom_navigation.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.ic_dashboard->setCurrentFragment(DashboardFragment())
+                R.id.ic_profile->setCurrentFragment(Profile_Fragment())
+                R.id.ic_info->setCurrentFragment(InfoFragment())
+
             }
+            true
         }
     }
+
+    private fun setCurrentFragment(fragment:Fragment)=
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.flFragment,fragment)
+            commit()
+        }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val menuInflater = MenuInflater(this)

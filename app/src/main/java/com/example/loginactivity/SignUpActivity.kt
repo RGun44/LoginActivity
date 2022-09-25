@@ -1,15 +1,24 @@
 package com.example.loginactivity
 
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.example.loginactivity.databinding.ActivitySignUpBinding
+import com.example.loginactivity.room.Constant
+import com.example.loginactivity.room.UserDB
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import org.w3c.dom.Text
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignUpActivity : AppCompatActivity(){
+    val db by lazy { UserDB(this) }
     private lateinit var binding: ActivitySignUpBinding
 
 
@@ -85,4 +94,50 @@ class SignUpActivity : AppCompatActivity(){
             startActivity(moveHome)
         })
     }
+
+//    private fun deleteDialog(user: UserDB){
+//        val alertDialog = AlertDialog.Builder(this)
+//        alertDialog.apply {
+//            setTitle("Confirmation")
+//            setMessage("Are You Sure to delete this data?")
+//            setNegativeButton("Cancel", DialogInterface.OnClickListener { dialogInterface, i -> dialogInterface.dismiss()
+//            })
+//            setPositiveButton("Delete", DialogInterface.OnClickListener { dialogInterface, i -> dialogInterface.dismiss()
+//                CoroutineScope(Dispatchers.IO).launch {
+//                    db.userDao().deleteUser(user)
+//                    loadData()
+//                }
+//            })
+//        }
+//        alertDialog.show()
+//    }
+//
+//    override fun onStart() {
+//        super.onStart()
+//        loadData()
+//    }
+//
+//    fun loadData() {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val notes = db.userDao().getUser()
+//            Log.d("MainActivity","dbResponse: $notes")
+//            withContext(Dispatchers.Main){
+//
+//            }
+//        }
+//    }
+//
+//    fun setupListener() {
+//        btnSignUp.setOnClickListener{
+//            intentEdit(0, Constant.TYPE_CREATE)
+//        }
+//    }
+//
+//    fun intentEdit(noteId : Int, intentType: Int){
+//        startActivity(
+//            Intent(applicationContext, EditProfileActivity::class.java)
+//                .putExtra("intent_id", noteId)
+//                .putExtra("intent_type", intentType)
+//        )
+//    }
 }

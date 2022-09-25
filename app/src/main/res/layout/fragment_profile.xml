@@ -7,17 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-       app:itemTextColor="#7FB77E"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_menu" />
-
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="240dp"
@@ -38,7 +27,8 @@
             android:layout_marginTop="20dp"
             android:layout_gravity="center_horizontal"
             app:tint="#181818"
-            tools:src="@drawable/img" />
+            tools:src="@drawable/ic_baseline_person_24"
+            android:contentDescription="Icon Profile" />
 
         <TextView
             android:id="@+id/tvname"

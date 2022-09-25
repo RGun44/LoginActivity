@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class paketAdapter : Fragment() {
+class PackageAdapter : Fragment() {
 
 
     override fun onCreateView(

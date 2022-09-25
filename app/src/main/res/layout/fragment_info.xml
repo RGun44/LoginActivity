@@ -7,4 +7,10 @@
     android:layout_height="match_parent"
     tools:context=".fragment.InfoFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_daerah"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/rv_item_daerah" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

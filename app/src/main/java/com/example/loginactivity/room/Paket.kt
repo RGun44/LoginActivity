@@ -5,10 +5,10 @@ import androidx.room.PrimaryKey
 
 @Entity
 class Paket (
-    @PrimaryKey
-    val username: String,
-    val password: String,
-    val email: String,
-    val phonenumber: String,
-    val birthdate: String
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+    val daerahAsal: String,
+    val daerahTujuan: String,
+    val beratPaket: Int,
+    val kecepatan: String,
 )
