@@ -22,6 +22,12 @@ abstract class UserDB: RoomDatabase() {
                 instance = it
             }
         }
+
+        fun getInstance(context: Context): UserDB =
+            instance ?: synchronized(this) {
+                instance ?: buildDatabase(context).also { instance = it }
+            }
+
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
