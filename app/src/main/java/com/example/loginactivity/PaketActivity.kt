@@ -82,7 +82,7 @@ class PaketActivity : AppCompatActivity() {
 
     fun loadData() {
         CoroutineScope(Dispatchers.IO).launch {
-            val reservasi_val = db.paketDao().getPaket()
+            val reservasi_val = db.paketDao().getPakets()
             Log.d("MainActivity", "dbResponse: $reservasi_val")
             withContext(Dispatchers.Main) {
                 paketAdapt.setData(reservasi_val)

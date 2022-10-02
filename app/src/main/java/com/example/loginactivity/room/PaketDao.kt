@@ -14,5 +14,8 @@ interface PaketDao {
     fun deletePaket(paket: Paket)
 
     @Query("SELECT * FROM paket")
-    fun getPaket(): List<Paket>
+    suspend fun getPakets() : List<Paket>
+
+    @Query("SELECT * FROM paket WHERE id =:paketId")
+    fun getPaket(paketId: Int): List<Paket>
 }

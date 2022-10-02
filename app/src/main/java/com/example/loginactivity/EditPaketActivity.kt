@@ -95,7 +95,7 @@ class EditPaketActivity : AppCompatActivity() {
     fun getPaket() {
         paketId = intent.getIntExtra("intent_id", 0)
         CoroutineScope(Dispatchers.IO).launch {
-            val paket = db.paketDao().getPaket()[0]
+            val paket = db.paketDao().getPaket(paketId)[0]
             edit_asal.setText(paket.daerahAsal)
             edit_tujuan.setText(paket.daerahTujuan)
             edit_bobot.setText(paket.beratPaket.toString())
@@ -176,16 +176,16 @@ class EditPaketActivity : AppCompatActivity() {
             .setStyle(NotificationCompat.InboxStyle()
                 .setBigContentTitle("List Data yang diregister")
                 .addLine(binding?.editAsal?.text.toString())
-                .addLine(binding?.editTujuan?.text.toString())
-                .addLine(binding?.editBobot?.text.toString())
-                .addLine(binding?.editPilihan?.text.toString())
+                .addLine(binding?.editAsal?.text.toString())
+                .addLine(binding?.editAsal?.text.toString())
+                .addLine(binding?.editAsal?.text.toString())
             )
             .setColor(Color.BLUE)
             .setAutoCancel(true)
             .setOnlyAlertOnce(true)
             .setContentIntent(pendingIntent)
             .addAction(R.mipmap.ic_launcher,"Toast",actionIntent)
-            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         with(NotificationManagerCompat.from(this)) {
             notify(notificationId2,builder.build())
