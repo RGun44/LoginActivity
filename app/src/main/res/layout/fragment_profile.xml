@@ -28,7 +28,7 @@
             android:layout_marginTop="20dp"
             android:layout_gravity="center_horizontal"
             app:tint="#181818"
-            tools:src="@drawable/ic_baseline_person_24"
+            android:src="@drawable/ic_baseline_person_24"
             android:contentDescription="Icon Profile" />
 
         <TextView

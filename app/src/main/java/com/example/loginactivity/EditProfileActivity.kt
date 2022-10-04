@@ -27,12 +27,13 @@ class EditProfileActivity : AppCompatActivity() {
 
         setContentView(itemBinding?.root)
 
-        sharedPreferences = this.getSharedPreferences("login", Context.MODE_PRIVATE)
+        sharedPreferences = this.getSharedPreferences("login", MODE_PRIVATE)
         val id = sharedPreferences?.getString("id", "")
         itemBinding?.etsignup?.setText(db.userDao().getUser(id!!.toInt()).username)
         itemBinding?.etemail?.setText(db.userDao().getUser(id!!.toInt()).email)
         itemBinding?.etphone?.setText(db.userDao().getUser(id!!.toInt()).phonenumber)
         itemBinding?.etbirthdate?.setText(db.userDao().getUser(id!!.toInt()).birthdate)
+        itemBinding?.etenterpass?.setText(db.userDao().getUser(id!!.toInt()).password)
 
         itemBinding?.etbirthdate?.setOnClickListener {
             val c = Calendar.getInstance()

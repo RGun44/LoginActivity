@@ -8,13 +8,17 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.example.loginactivity.databinding.ActivityHomeBinding
 import com.example.loginactivity.fragment.DashboardFragment
 import com.example.loginactivity.fragment.InfoFragment
 import com.example.loginactivity.fragment.Profile_Fragment
+import com.example.loginactivity.room.UserDB
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
+    val db by lazy { UserDB(this) }
     private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,10 +26,16 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         setCurrentFragment(DashboardFragment())
 
+        val fragmentManager: FragmentManager = supportFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        val myFragment = Profile_Fragment()
+
         bottom_navigation.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.ic_dashboard->setCurrentFragment(DashboardFragment())
-                R.id.ic_profile->setCurrentFragment(Profile_Fragment())
+                R.id.ic_profile->{
+                    setCurrentFragment(Profile_Fragment())
+                }
                 R.id.ic_info->setCurrentFragment(InfoFragment())
 
             }
