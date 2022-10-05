@@ -44,30 +44,30 @@ class EditPaketActivity : AppCompatActivity() {
         val intentType = intent.getIntExtra("intent_type", 0)
         when (intentType) {
             Constant.TYPE_CREATE -> {
-                button_update.visibility = View.GONE
+                binding?.buttonUpdate?.visibility = View.GONE
             }
             Constant.TYPE_READ -> {
-                button_save.visibility = View.GONE
-                button_update.visibility = View.GONE
+                binding?.buttonSave?.visibility = View.GONE
+                binding?.buttonUpdate?.visibility = View.GONE
                 getPaket()
             }
             Constant.TYPE_UPDATE -> {
-                button_save.visibility = View.GONE
+                binding?.buttonSave?.visibility = View.GONE
                 getPaket()
             }
         }
     }
 
     private fun setupListener() {
-        button_save.setOnClickListener {
+        binding?.buttonSave?.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 db.paketDao().addPaket(
                     Paket(
                         0,
-                        edit_asal.text.toString(),
-                        edit_tujuan.text.toString(),
-                        Integer.parseInt(edit_bobot.text.toString()),
-                        edit_pilihan.text.toString()
+                        binding?.editAsal?.text.toString(),
+                        binding?.editTujuan?.text.toString(),
+                        Integer.parseInt(binding?.editBobot?.text.toString()),
+                        binding?.editPilihan?.text.toString()
                     )
                 )
                 finish()
@@ -76,15 +76,15 @@ class EditPaketActivity : AppCompatActivity() {
             sendNotification2()
         }
 
-        button_update.setOnClickListener {
+        binding?.buttonUpdate?.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 db.paketDao().updatePaket(
                     Paket(
                         paketId,
-                        edit_asal.text.toString(),
-                        edit_tujuan.text.toString(),
-                        Integer.parseInt(edit_bobot.text.toString()),
-                        edit_pilihan.text.toString()
+                        binding?.editAsal?.text.toString(),
+                        binding?.editTujuan?.text.toString(),
+                        Integer.parseInt(binding?.editBobot?.text.toString()),
+                        binding?.editPilihan?.text.toString()
                     )
                 )
                 finish()
@@ -96,10 +96,10 @@ class EditPaketActivity : AppCompatActivity() {
         paketId = intent.getIntExtra("intent_id", 0)
         CoroutineScope(Dispatchers.IO).launch {
             val paket = db.paketDao().getPaket(paketId)[0]
-            edit_asal.setText(paket.daerahAsal)
-            edit_tujuan.setText(paket.daerahTujuan)
-            edit_bobot.setText(paket.beratPaket.toString())
-            edit_pilihan.setText(paket.kecepatan)
+            binding?.editAsal?.setText(paket.daerahAsal)
+            binding?.editTujuan?.setText(paket.daerahTujuan)
+            binding?.editBobot?.setText(paket.beratPaket.toString())
+            binding?.editPilihan?.setText(paket.kecepatan)
         }
     }
 
@@ -138,12 +138,12 @@ class EditPaketActivity : AppCompatActivity() {
 
         val builder = NotificationCompat.Builder(this,CHANNEL_ID_1)
             .setSmallIcon(R.drawable.ic_baseline_looks_one_24)
-            .setContentTitle(binding?.editAsal?.text.toString())
-            .setContentText(binding?.editTujuan?.text.toString())
+            .setContentTitle("Registrasi Sukses")
+            .setContentText("Klik untuk melihat detailnya")
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
             .setStyle(NotificationCompat.BigTextStyle()
                 .setBigContentTitle("Register Sukses")
-                .bigText("Pesanan anda berhasil diregistrasi, mohon lanjut ke bagian pembayarannya")
+                .bigText("Pesanan anda dari " + binding?.editAsal?.text + " Menuju " + binding?.editTujuan?.text + "berhasil diregistrasi, mohon lanjut ke bagian pembayarannya")
                 .setSummaryText("dari PaketIn")
             )
             .setColor(Color.BLUE)
@@ -170,15 +170,15 @@ class EditPaketActivity : AppCompatActivity() {
 
         val builder = NotificationCompat.Builder(this,CHANNEL_ID_2)
             .setSmallIcon(R.drawable.ic_baseline_looks_two_24)
-            .setContentTitle(binding?.editAsal?.text.toString())
-            .setContentText(binding?.editTujuan?.text.toString())
+            .setContentTitle("Data Lengkap Registrasi")
+            .setContentText("Klik untuk melihat")
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
             .setStyle(NotificationCompat.InboxStyle()
                 .setBigContentTitle("List Data yang diregister")
-                .addLine(binding?.editAsal?.text.toString())
-                .addLine(binding?.editTujuan?.text.toString())
-                .addLine(binding?.editBobot?.text.toString())
-                .addLine(binding?.editPilihan?.text.toString())
+                .addLine("Asal Paket     : " + binding?.editAsal?.text.toString())
+                .addLine("Tujuan Paket   : " + binding?.editTujuan?.text.toString())
+                .addLine("Bobot Paket    : " + binding?.editBobot?.text.toString())
+                .addLine("Pilihan        : " + binding?.editPilihan?.text.toString())
             )
             .setColor(Color.BLUE)
             .setAutoCancel(true)

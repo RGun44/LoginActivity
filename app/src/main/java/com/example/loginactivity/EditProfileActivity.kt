@@ -118,10 +118,10 @@ class EditProfileActivity : AppCompatActivity() {
             User(
                 id!!.toInt(),
                 itemBinding?.etsignup?.text.toString(),
-                itemBinding?.etphone?.text.toString(),
+                db.userDao().getUser(id.toInt()).password.toString(),
                 itemBinding?.etemail?.text.toString(),
+                itemBinding?.etphone?.text.toString(),
                 itemBinding?.etbirthdate?.text.toString(),
-                db.userDao().getUser(id.toInt()).password.toString()
             )
         )
         finish()

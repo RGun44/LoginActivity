@@ -3,6 +3,7 @@ package com.example.loginactivity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import android.widget.Button
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -10,11 +11,15 @@ import com.example.loginactivity.room.User
 import com.example.loginactivity.room.UserDB
 import com.google.android.material.snackbar.Snackbar
 import android.content.SharedPreferences
+import com.example.loginactivity.databinding.ActivityLoginBinding
+import com.example.loginactivity.databinding.ActivitySignUpBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
     val db by lazy{ UserDB(this) }
+    private lateinit var binding: ActivityLoginBinding
     private lateinit var inputUsername : TextInputLayout
     private lateinit var inputPassword : TextInputLayout
     private lateinit var mainLayout : ConstraintLayout
@@ -26,11 +31,13 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        inputUsername = findViewById(R.id.inputLayoutUsername)
-        inputPassword = findViewById(R.id.inputLayoutPassword)
-        mainLayout = findViewById(R.id.mainLayout)
+        inputUsername = binding.inputLayoutUsername
+        inputPassword = binding.inputLayoutPassword
+        mainLayout = binding.mainLayout
 
         var intent : Intent = intent
         if(intent.hasExtra("SIGNUP")) {
@@ -38,8 +45,8 @@ class LoginActivity : AppCompatActivity() {
             setText()
         }
 
-        val btnLogin = findViewById<Button>(R.id.btnLogin)
-        val btnRegistrasi = findViewById<Button>(R.id.btnRegistrasi)
+        val btnLogin = binding.btnLogin
+        val btnRegistrasi = binding.btnRegistrasi
 
         btnRegistrasi.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
@@ -91,9 +98,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun setText(){
-        inputUsername = findViewById(R.id.inputLayoutUsername)
+        inputUsername = binding.inputLayoutUsername
         inputUsername.getEditText()?.setText(vUsername)
-        inputPassword = findViewById(R.id.inputLayoutPassword)
+        inputPassword = binding.inputLayoutPassword
         inputPassword.getEditText()?.setText(vPassword)
     }
 }

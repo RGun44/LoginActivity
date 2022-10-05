@@ -1,5 +1,6 @@
 package com.example.loginactivity
 
+import android.app.DatePickerDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -21,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class SignUpActivity : AppCompatActivity(){
     val db by lazy { UserDB(this) }
@@ -48,6 +50,28 @@ class SignUpActivity : AppCompatActivity(){
         var phonenumber = binding.etphone
         var birthdate = binding.etbirthdate
         var password = binding.etenterpass
+
+        binding.etbirthdate?.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+            val dpd = DatePickerDialog(
+                this,
+                DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+
+                    // Display Selected date in textbox
+                    binding?.birthdate?.editText?.setText("" + dayOfMonth + "/" + monthOfYear + "/" + year)
+
+                },
+                year,
+                month,
+                day
+            )
+
+            dpd.show()
+        }
 
 
         btnClear.setOnClickListener {

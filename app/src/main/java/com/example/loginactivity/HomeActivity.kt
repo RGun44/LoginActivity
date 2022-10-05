@@ -8,8 +8,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.example.loginactivity.databinding.ActivityHomeBinding
 import com.example.loginactivity.fragment.DashboardFragment
 import com.example.loginactivity.fragment.InfoFragment
@@ -23,12 +21,10 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         setCurrentFragment(DashboardFragment())
-
-        val fragmentManager: FragmentManager = supportFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        val myFragment = Profile_Fragment()
 
         bottom_navigation.setOnNavigationItemSelectedListener {
             when(it.itemId){

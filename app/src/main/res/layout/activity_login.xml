@@ -5,7 +5,7 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#D9D9D9"
     tools:context=".LoginActivity">
 
     <ImageView
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="login"
+        android:text="Login"
         android:textColor="@color/black"
         style="@style/TextAppearance.MaterialComponents.Headline4"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -92,14 +92,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="register" />
+            android:text="register"
+            app:cornerRadius="16dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Login" />
+            android:text="Login"
+            app:cornerRadius="16dp"/>
 
     </LinearLayout>
 

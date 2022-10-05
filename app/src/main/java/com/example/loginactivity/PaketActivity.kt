@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.loginactivity.databinding.ActivityPaketBinding
 import com.example.loginactivity.room.Constant
 import com.example.loginactivity.room.Paket
 import com.example.loginactivity.room.PaketDB
@@ -20,10 +21,13 @@ import kotlinx.coroutines.withContext
 class PaketActivity : AppCompatActivity() {
     val db by lazy { PaketDB(this) }
     lateinit var paketAdapt: PaketAdapter
+    private lateinit var binding: ActivityPaketBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_paket)
+        binding = ActivityPaketBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         setupListener()
         setupRecyclerView()
     }
