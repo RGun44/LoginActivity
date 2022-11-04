@@ -107,6 +107,12 @@ class EditProfileActivity : AppCompatActivity() {
                 return@OnClickListener
             }
         })
+
+        itemBinding?.imageView?.setOnClickListener(View.OnClickListener
+        {
+            val intent = Intent(this, CameraMain::class.java)
+            startActivity(intent)
+        })
     }
 
 
