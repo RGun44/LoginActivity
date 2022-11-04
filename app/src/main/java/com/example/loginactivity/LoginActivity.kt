@@ -17,7 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity() {
+class  LoginActivity : AppCompatActivity() {
     val db by lazy{ UserDB(this) }
     private lateinit var binding: ActivityLoginBinding
     private lateinit var inputUsername : TextInputLayout

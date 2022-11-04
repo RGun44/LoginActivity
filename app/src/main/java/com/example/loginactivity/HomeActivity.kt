@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.loginactivity.databinding.ActivityHomeBinding
 import com.example.loginactivity.fragment.DashboardFragment
 import com.example.loginactivity.fragment.InfoFragment
+import com.example.loginactivity.fragment.LocationFragment
 import com.example.loginactivity.fragment.Profile_Fragment
 import com.example.loginactivity.room.UserDB
 import kotlinx.android.synthetic.main.activity_home.*
@@ -33,6 +34,7 @@ class HomeActivity : AppCompatActivity() {
                     setCurrentFragment(Profile_Fragment())
                 }
                 R.id.ic_info->setCurrentFragment(InfoFragment())
+                R.id.location->setCurrentFragment(LocationFragment())
 
             }
             true

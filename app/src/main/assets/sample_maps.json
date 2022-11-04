@@ -1,0 +1,38 @@
+{
+  "results": [
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.773767250176093,
+          "lng": 110.41105711196742
+        }
+      },
+      "name": "Paketin Cabang Babarsari",
+      "vicinity": "Jl. Babarsari No.105, Kledokan, Caturtunggal, Kec. Depok, Kabupaten Sleman, Jawa Tengah 55281"
+    },
+
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.781123073259458,
+          "lng": 110.4137084119676
+        }
+      },
+      "name": "Paketin Cabang Dirgantara",
+      "vicinity": "Jl. Dirgantara II No.7, Janti, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281"
+    },
+
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.750407755322179,
+          "lng": 110.38613684080264
+        }
+      },
+      "name": "Paketin Cabang Jakal",
+      "vicinity": "Jl. Kaliurang No.11A, Kentungan, Condongcatur, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55284"
+    }
+
+  ],
+  "status": "OK"
+}
