@@ -45,9 +45,9 @@ class PaketAdapter(private var paketList: List<Paket>,context: Context):
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val paket = filteredPaketList[position]
         holder.tvId.text = paket.id
-        holder.tvDaerahAsal.text = paket.daerahAsal
-        holder.tvDaerahTujuan.text = paket.daerahTujuan
-        holder.tvBeratPaket.text = paket.beratPaket
+        holder.tvDaerahAsal.text = paket.daerah_asal
+        holder.tvDaerahTujuan.text = paket.daerah_tujuan
+        holder.tvBeratPaket.text = paket.berat_paket
         holder.tvKecepatan.text = paket.kecepatan
 
         holder.btnDelete.setOnClickListener{
@@ -82,7 +82,7 @@ class PaketAdapter(private var paketList: List<Paket>,context: Context):
                     filtered.addAll(paketList)
                 } else {
                     for (paket in paketList) {
-                        if (paket.daerahAsal.lowercase(Locale.getDefault())
+                        if (paket.daerah_asal.lowercase(Locale.getDefault())
                                 .contains(charSequenceString.lowercase(Locale.getDefault()))
                         ) filtered.add(paket)
 

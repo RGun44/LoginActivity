@@ -82,9 +82,9 @@ class AddEditActivity : AppCompatActivity() {
                 val paket = gson.fromJson(response, Paket::class.java)
 
                 etId!!.setText(paket.id)
-                etDaerahAsal!!.setText(paket.daerahAsal)
-                etDaerahTujuan!!.setText(paket.daerahTujuan)
-                etBeratPaket!!.setText(paket.beratPaket)
+                etDaerahAsal!!.setText(paket.daerah_asal)
+                etDaerahTujuan!!.setText(paket.daerah_tujuan)
+                etBeratPaket!!.setText(paket.berat_paket)
                 edKecepatan!!.setText(paket.kecepatan)
                 setExposedDropDownMenu()
 

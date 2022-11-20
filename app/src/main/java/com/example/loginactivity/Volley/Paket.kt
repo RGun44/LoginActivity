@@ -1,14 +1,10 @@
 package com.example.loginactivity.Volley
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity
 class Paket (
-    @PrimaryKey(autoGenerate = true)
+
     var id: String,
-    var daerahAsal: String,
-    var daerahTujuan: String,
-    var beratPaket: String,
+    var daerah_asal: String,
+    var daerah_tujuan: String,
+    var berat_paket: String,
     var kecepatan: String,
 )
