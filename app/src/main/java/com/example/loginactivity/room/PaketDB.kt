@@ -1,32 +1,33 @@
-package com.example.loginactivity.room
-
-import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-
-
-@Database(
-    entities = [Paket::class],
-    version = 1
-)
-
-abstract class PaketDB:  RoomDatabase() {
-    abstract fun paketDao() : PaketDao
-    companion object {
-        @Volatile private var instance : PaketDB? = null
-        private val LOCK = Any()
-        operator fun invoke(context: Context) = instance ?:
-        synchronized(LOCK){
-            instance ?: buildDatabase(context).also {
-                instance = it
-            }
-        }
-        private fun buildDatabase(context: Context) =
-            Room.databaseBuilder(
-                context.applicationContext,
-                PaketDB::class.java,
-                "paket.db"
-            ).allowMainThreadQueries().build()
-    }
-}
+//package com.example.loginactivity.room
+//
+//import android.content.Context
+//import androidx.room.Database
+//import androidx.room.Room
+//import androidx.room.RoomDatabase
+//import com.example.loginactivity.Volley.Paket
+//
+//
+//@Database(
+//    entities = [Paket::class],
+//    version = 1
+//)
+//
+//abstract class PaketDB:  RoomDatabase() {
+//    abstract fun paketDao() : PaketDao
+//    companion object {
+//        @Volatile private var instance : PaketDB? = null
+//        private val LOCK = Any()
+//        operator fun invoke(context: Context) = instance ?:
+//        synchronized(LOCK){
+//            instance ?: buildDatabase(context).also {
+//                instance = it
+//            }
+//        }
+//        private fun buildDatabase(context: Context) =
+//            Room.databaseBuilder(
+//                context.applicationContext,
+//                PaketDB::class.java,
+//                "paket.db"
+//            ).allowMainThreadQueries().build()
+//    }
+//}

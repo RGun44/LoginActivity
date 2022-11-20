@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.loginactivity.PaketActivity
+import com.example.loginactivity.Volley.MainActivity
 import com.example.loginactivity.databinding.FragmentDashboardBinding
 
 
@@ -18,7 +18,7 @@ class DashboardFragment : Fragment() {
     ): View? {
         val binding = FragmentDashboardBinding.inflate(layoutInflater)
         binding.btnEdit.setOnClickListener {
-            val intent = Intent(this@DashboardFragment.requireContext(), PaketActivity::class.java)
+            val intent = Intent(this@DashboardFragment.requireContext(), MainActivity::class.java)
             startActivity(intent)
         }
         return binding.root
