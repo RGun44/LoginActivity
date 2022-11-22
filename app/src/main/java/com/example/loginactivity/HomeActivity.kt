@@ -27,6 +27,8 @@ class HomeActivity : AppCompatActivity() {
         setContentView(view)
         setCurrentFragment(DashboardFragment())
 
+        val id = intent.getLongExtra("id", -1)
+
         bottom_navigation.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.ic_dashboard->setCurrentFragment(DashboardFragment())

@@ -2,7 +2,7 @@ package com.example.loginactivity.Volley
 
 class PaketApi {
     companion object{
-        val BASE_URL ="http://192.168.0.105/paketin/public/api/"
+        val BASE_URL ="http://192.168.0.116/paketinDBLaravel/public/api/"
         val GET_ALL_URL = BASE_URL + "paket/"
         val GET_BY_ID_URL = BASE_URL + "paket/"
         val ADD_URL = BASE_URL + "paket"

@@ -11,11 +11,24 @@ import com.example.loginactivity.room.User
 import com.example.loginactivity.room.UserDB
 import com.google.android.material.snackbar.Snackbar
 import android.content.SharedPreferences
+import android.widget.Toast
+import com.android.volley.AuthFailureError
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.example.loginactivity.Volley.Paket
+import com.example.loginactivity.VolleyUser.AddEditProfile
+import com.example.loginactivity.VolleyUser.Profile
+import com.example.loginactivity.VolleyUser.UserApi
 import com.example.loginactivity.databinding.ActivityLoginBinding
 import com.example.loginactivity.databinding.ActivitySignUpBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_login.*
+import org.json.JSONObject
+import java.nio.charset.StandardCharsets
 
 class  LoginActivity : AppCompatActivity() {
     val db by lazy{ UserDB(this) }
@@ -24,6 +37,7 @@ class  LoginActivity : AppCompatActivity() {
     private lateinit var inputPassword : TextInputLayout
     private lateinit var mainLayout : ConstraintLayout
     lateinit var mBundle: Bundle
+    private var queue: RequestQueue? = null
 
     lateinit var vUsername: String
     lateinit var vPassword: String
@@ -35,6 +49,7 @@ class  LoginActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        queue = Volley.newRequestQueue(this)
         inputUsername = binding.inputLayoutUsername
         inputPassword = binding.inputLayoutPassword
         mainLayout = binding.mainLayout
@@ -49,45 +64,15 @@ class  LoginActivity : AppCompatActivity() {
         val btnRegistrasi = binding.btnRegistrasi
 
         btnRegistrasi.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
+            val intent = Intent(this, AddEditProfile::class.java)
             startActivity(intent)
         }
 
         btnLogin.setOnClickListener OnClickListener@{
-            var checkLogin = false
             val username: String = inputUsername.getEditText()?.getText().toString()
             val password: String = inputPassword.getEditText()?.getText().toString()
 
-            if(username.isEmpty()){
-                inputUsername.setError("Username must be filled with text")
-                checkLogin = false
-            }
-
-            if(password.isEmpty()){
-                inputPassword.setError("Password must be filled with text")
-                checkLogin = false
-            }
-
-            val UserDB: User = db.userDao().getUser(username, password)
-
-            if (UserDB != null) {
-                sharedPreferences = this.getSharedPreferences("login", Context.MODE_PRIVATE)
-                var editor = sharedPreferences?.edit()
-                editor?.putString("id", UserDB.id.toString())
-                editor?.commit()
-                val moveMenu = Intent(this, HomeActivity::class.java)
-                startActivity(moveMenu)
-            } else {
-                Snackbar.make(
-                    mainLayout,
-                    "Username or Password incorrect",
-                    Snackbar.LENGTH_LONG
-                ).show()
-                return@OnClickListener
-            }
-            if(!checkLogin)return@OnClickListener
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
+            cekLogin(username,password)
         }
     }
 
@@ -102,5 +87,54 @@ class  LoginActivity : AppCompatActivity() {
         inputUsername.getEditText()?.setText(vUsername)
         inputPassword = binding.inputLayoutPassword
         inputPassword.getEditText()?.setText(vPassword)
+    }
+
+    private fun cekLogin(username: String, password: String){
+        // Fungsi untuk menampilkan data user berdasarkan id
+        val stringRequest: StringRequest =
+            object : StringRequest(Method.GET, UserApi.GET_ALL_URL, Response.Listener { response ->
+                val gson = Gson()
+                val jsonObject = JSONObject(response)
+                val jsonData = jsonObject.getJSONArray("data")
+                val profile : Array<Profile> = gson.fromJson(jsonData.toString(),Array<Profile>::class.java)
+
+                for (profile in profile) {
+                    if (profile.username == username && profile.password == password){
+                        sharedPreferences = this.getSharedPreferences("login", Context.MODE_PRIVATE)
+                        var editor = sharedPreferences?.edit()
+                        editor?.putString("id", profile.id.toString())
+                        editor?.apply()
+                        val moveHome = Intent( this@LoginActivity, HomeActivity::class.java).apply {
+                            putExtra("id",profile.id)
+                        }
+                        startActivity(moveHome)
+                        finish()
+                        break;
+                    }
+                    else if (profile==null){
+                        Toast.makeText(this@LoginActivity, "Username atau Password salah", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            },  Response.ErrorListener { error ->
+                try{
+                    val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
+                    val errors = JSONObject(responseBody)
+                    Toast.makeText(
+                        this@LoginActivity,
+                        errors.getString("message"),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }catch (e: Exception){
+                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }){
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Accept"] = "application/json"
+                    return headers
+                }
+            }
+        queue!!.add(stringRequest)
     }
 }

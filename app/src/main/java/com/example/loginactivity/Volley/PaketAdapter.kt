@@ -69,7 +69,6 @@ class PaketAdapter(private var paketList: List<Paket>,context: Context):
             i.putExtra("id", paket.id)
             if (context is MainActivity)
                 context.startActivityForResult(i, MainActivity.LAUNCH_ADD_ACTIVITY)
-
         }
     }
 
