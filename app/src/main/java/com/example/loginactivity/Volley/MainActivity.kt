@@ -72,7 +72,9 @@ class MainActivity : AppCompatActivity() {
         val stringRequest: StringRequest = object :
             StringRequest(Method.GET, PaketApi.GET_ALL_URL, Response.Listener { response ->
                 val gson = Gson()
-                var paket: Array<Paket> = gson.fromJson(response, Array<Paket>::class.java)
+                val jsonObject = JSONObject(response)
+                val jsonData = jsonObject.getJSONArray("data")
+                val paket : Array<Paket> = gson.fromJson(jsonData.toString(),Array<Paket>::class.java)
 
                 adapter!!.setPaketList(paket)
                 adapter!!.filter.filter(svPaket!!.query)
