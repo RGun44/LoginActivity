@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.loginactivity.R
 import com.example.loginactivity.RVDaerahAdapter
-import com.example.loginactivity.entity.Daerah
+import com.example.loginactivity.Volley.entity.Daerah
 
 
 class InfoFragment : Fragment() {
