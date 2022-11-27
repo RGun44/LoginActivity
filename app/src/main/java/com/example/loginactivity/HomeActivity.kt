@@ -24,8 +24,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
-//        val view = binding.root
-//        setContentView(view)
 
         setContentView(R.layout.activity_home)
         setCurrentFragment(DashboardFragment())

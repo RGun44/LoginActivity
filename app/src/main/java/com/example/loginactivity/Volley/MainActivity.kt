@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley
 import com.example.loginactivity.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
@@ -87,6 +88,7 @@ class MainActivity : AppCompatActivity() {
                     MotionToast.createToast(this,
                         "Hurray Berhasil 😍",
                         "Data Berhasil Diambil",
+
                         MotionToastStyle.SUCCESS,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.LONG_DURATION,

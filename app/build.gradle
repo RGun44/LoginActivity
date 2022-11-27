@@ -98,5 +98,12 @@ dependencies {
     implementation 'com.github.ismaeldivita:chip-navigation-bar:1.4.0'
 
 
+    //shimmerrv
+//    implementation "com.facebook.shimmer:shimmer:0.1.0@aar"
+//    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+//    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+//    implementation 'com.github.bumtech.glide:glide:4.11.0'
+
+
 
 }
