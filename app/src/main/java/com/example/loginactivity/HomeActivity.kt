@@ -1,6 +1,8 @@
 package com.example.loginactivity
 
+import android.content.Context
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -17,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 class HomeActivity : AppCompatActivity() {
     val db by lazy { UserDB(this) }
     private lateinit var binding: ActivityHomeBinding
+    var sharedPreferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +28,9 @@ class HomeActivity : AppCompatActivity() {
         setContentView(view)
         setCurrentFragment(DashboardFragment())
 
-        val id = intent.getLongExtra("id", -1)
+        sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
+
+        val id = sharedPreferences!!.getString("id", "")
 
         Toast.makeText(this@HomeActivity,id.toString(),Toast.LENGTH_SHORT).show()
 

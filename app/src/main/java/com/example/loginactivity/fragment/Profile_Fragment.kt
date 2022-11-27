@@ -37,7 +37,6 @@ import java.nio.charset.StandardCharsets
 
 
 class Profile_Fragment : Fragment() {
-    val db by lazy { activity?.let { UserDB(it) } }
     var sharedPreferences: SharedPreferences? = null
     private var queue: RequestQueue? = null
 

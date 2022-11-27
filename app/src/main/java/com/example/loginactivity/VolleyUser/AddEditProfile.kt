@@ -1,6 +1,8 @@
 package com.example.loginactivity.VolleyUser
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -14,8 +16,7 @@ import com.android.volley.toolbox.Volley
 import com.example.loginactivity.HomeActivity
 import com.example.loginactivity.LoginActivity
 import com.example.loginactivity.R
-import com.example.loginactivity.Volley.Paket
-import com.example.loginactivity.Volley.PaketApi
+import com.example.loginactivity.databinding.ActivityAddEditProfileBinding
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import org.json.JSONObject
@@ -30,35 +31,40 @@ class AddEditProfile : AppCompatActivity() {
     private var etBirthdate: EditText? = null
     private var layoutLoading: LinearLayout? = null
     private var queue: RequestQueue? = null
+    private var binding: ActivityAddEditProfileBinding? = null
+
+    private val myPreference = "myPref"
+    private val name = "username"
+    private val password = "password"
+    var sharedPreferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_edit_profile)
+        var binding = ActivityAddEditProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //Pendeklarasian request queue
         queue = Volley.newRequestQueue(this)
-        etUsername = findViewById(R.id.et_username)
-        etPassword = findViewById(R.id.et_password)
-        etEmail = findViewById(R.id.et_email)
-        etPhonenumber = findViewById(R.id.et_phonenumber)
-        etBirthdate = findViewById(R.id.et_birthdate)
+        etUsername = binding.etUsername
+        etPassword = binding.etPassword
+        etEmail = binding.etEmail
+        etPhonenumber = binding.etPhonenumber
+        etBirthdate = binding.etBirthdate
         layoutLoading = findViewById(R.id.layout_loading)
 
-        val btnCancel = findViewById<Button>(R.id.btn_cancel)
-        btnCancel.setOnClickListener{finish() }
-        val btnSave = findViewById<Button>(R.id.btn_save)
+        //Pendeklarasian shared preferences
+        sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
 
-        val tvLogo =findViewById<TextView>(R.id.tvLogo)
+        val btnCancel = binding.btnCancel
+        btnCancel.setOnClickListener{finish() }
+        val btnSave = binding.btnSave
+        val tvLogo = binding.tvLogo
 
         val id = intent.getLongExtra("id", -1)
         if(id== -1L){
             tvLogo.setText("Sign Up")
             btnSave.setOnClickListener {
                 createUser()
-
-                val mBundle = Bundle()
-                mBundle.putString("username", etUsername?.text.toString())
-                mBundle.putString("password", etPassword?.text.toString())
             }
         }else{
             tvLogo.setText("Edit Profile")
@@ -127,12 +133,16 @@ class AddEditProfile : AppCompatActivity() {
                 if(profile!=null)
                     Toast.makeText(this@AddEditProfile, "Data Berhasil Ditambahkan", Toast.LENGTH_SHORT).show()
 
+                val strName: String =
+                    etUsername?.text.toString().trim()
+                val strEmail: String =
+                    etPassword?.text.toString().trim()
+                val editor: SharedPreferences.Editor =
+                    sharedPreferences!!.edit()
+                editor.putString(name, strName)
+                editor.putString(password, strEmail)
+                editor.apply()
                 val returnIntent = Intent(this@AddEditProfile, LoginActivity::class.java)
-
-                val mBundle = Bundle()
-                mBundle.putString("username", etUsername?.text.toString())
-                mBundle.putString("password", etPassword?.text.toString())
-                returnIntent.putExtra("SIGNUP",mBundle)
 
                 setResult(RESULT_OK, returnIntent)
                 finish()

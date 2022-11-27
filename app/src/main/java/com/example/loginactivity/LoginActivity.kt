@@ -97,9 +97,9 @@ class  LoginActivity : AppCompatActivity() {
                 for (profile in profile) {
                     if (profile.username == username && profile.password == password){
                         sharedPreferences = this.getSharedPreferences("login", Context.MODE_PRIVATE)
-                        var editor = sharedPreferences?.edit()
-                        editor?.putString("id", profile.id.toString())
-                        editor?.apply()
+                        var editor: SharedPreferences.Editor = sharedPreferences!!.edit()
+                        editor.putString("id", profile.id.toString())
+                        editor.apply()
                         val moveHome = Intent( this@LoginActivity, HomeActivity::class.java)
                         startActivity(moveHome)
                         finish()
