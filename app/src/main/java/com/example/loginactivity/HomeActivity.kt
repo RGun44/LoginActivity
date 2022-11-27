@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.loginactivity.databinding.ActivityHomeBinding
@@ -28,6 +29,8 @@ class HomeActivity : AppCompatActivity() {
         setCurrentFragment(DashboardFragment())
 
         val id = intent.getLongExtra("id", -1)
+
+        Toast.makeText(this@HomeActivity,id.toString(),Toast.LENGTH_SHORT).show()
 
         bottom_navigation.setOnNavigationItemSelectedListener {
             when(it.itemId){

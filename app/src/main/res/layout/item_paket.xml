@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_paket"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -90,7 +91,8 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_baseline_delete_forever_24"
-                    app:tint="#DC3939"/>
+                    app:tint="#DC3939"
+                    tools:ignore="SpeakableTextPresentCheck" />
 
             </LinearLayout>
 

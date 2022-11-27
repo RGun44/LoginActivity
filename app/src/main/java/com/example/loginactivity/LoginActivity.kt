@@ -11,6 +11,7 @@ import com.example.loginactivity.room.User
 import com.example.loginactivity.room.UserDB
 import com.google.android.material.snackbar.Snackbar
 import android.content.SharedPreferences
+import android.widget.EditText
 import android.widget.Toast
 import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
@@ -31,17 +32,20 @@ import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 
 class  LoginActivity : AppCompatActivity() {
-    val db by lazy{ UserDB(this) }
     private lateinit var binding: ActivityLoginBinding
+
     private lateinit var inputUsername : TextInputLayout
     private lateinit var inputPassword : TextInputLayout
+    var editTextName: EditText? = null
+    var editTextPassword: EditText? = null
     private lateinit var mainLayout : ConstraintLayout
-    lateinit var mBundle: Bundle
+
     private var queue: RequestQueue? = null
 
-    lateinit var vUsername: String
-    lateinit var vPassword: String
-    var sharedPreferences:SharedPreferences? = null
+    private val myPreference = "myPref"
+    private val name = "username"
+    private val password = "password"
+    var sharedPreferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,15 +53,20 @@ class  LoginActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
+
         queue = Volley.newRequestQueue(this)
         inputUsername = binding.inputLayoutUsername
         inputPassword = binding.inputLayoutPassword
+        editTextPassword = binding.etPassword
+        editTextName = binding.etUsername
         mainLayout = binding.mainLayout
 
-        var intent : Intent = intent
-        if(intent.hasExtra("SIGNUP")) {
-            getBundle()
-            setText()
+        if (sharedPreferences!!.contains(name)) {
+            editTextName?.setText(sharedPreferences!!.getString(name, ""))
+        }
+        if (sharedPreferences!!.contains(password)) {
+            editTextPassword?.setText(sharedPreferences!!.getString(password, ""))
         }
 
         val btnLogin = binding.btnLogin
@@ -76,19 +85,6 @@ class  LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun getBundle(){
-        mBundle = intent.getBundleExtra("SIGNUP")!!
-        vUsername = mBundle.getString("username")!!
-        vPassword = mBundle.getString("password")!!
-    }
-
-    fun setText(){
-        inputUsername = binding.inputLayoutUsername
-        inputUsername.getEditText()?.setText(vUsername)
-        inputPassword = binding.inputLayoutPassword
-        inputPassword.getEditText()?.setText(vPassword)
-    }
-
     private fun cekLogin(username: String, password: String){
         // Fungsi untuk menampilkan data user berdasarkan id
         val stringRequest: StringRequest =
@@ -104,9 +100,7 @@ class  LoginActivity : AppCompatActivity() {
                         var editor = sharedPreferences?.edit()
                         editor?.putString("id", profile.id.toString())
                         editor?.apply()
-                        val moveHome = Intent( this@LoginActivity, HomeActivity::class.java).apply {
-                            putExtra("id",profile.id)
-                        }
+                        val moveHome = Intent( this@LoginActivity, HomeActivity::class.java)
                         startActivity(moveHome)
                         finish()
                         break;

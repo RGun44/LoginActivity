@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
@@ -25,13 +26,15 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class SignUpActivity : AppCompatActivity(){
-    val db by lazy { UserDB(this) }
     private lateinit var binding: ActivitySignUpBinding
-    private var userId: Int = 0
 
     private val CHANNEL_ID_1 = "channel_notification_01"
     private val notificationId1 = 101
 
+    private val myPreference = "myPref"
+    private val nameSP = "username"
+    private val passwordSP = "password"
+    var sharedPreferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -39,6 +42,8 @@ class SignUpActivity : AppCompatActivity(){
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
 
         createNotificationChannel()
         title = "User Login"
@@ -115,13 +120,11 @@ class SignUpActivity : AppCompatActivity(){
 
             if (!checkSignUp) return@OnClickListener
             val moveHome = Intent(this@SignUpActivity, LoginActivity::class.java)
+            val editor: SharedPreferences.Editor = sharedPreferences!!.edit()
+            editor.putString(nameSP, getUsername)
+            editor.putString(passwordSP, getPassword)
+            editor.apply()
 
-            val mBundle = Bundle()
-            mBundle.putString("username", getUsername)
-            mBundle.putString("password", getPassword)
-            moveHome.putExtra("SIGNUP", mBundle)
-
-            setupListener()
             startActivity(moveHome)
         })
     }
@@ -139,28 +142,6 @@ class SignUpActivity : AppCompatActivity(){
             val notificationManager : NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel1)
-        }
-    }
-
-    fun setupListener() {
-        var username = binding.etsignup
-        var email = binding.etemail
-        var phonenumber = binding.etphone
-        var birthdate = binding.etbirthdate
-        var password = binding.etenterpass
-
-        CoroutineScope(Dispatchers.IO).launch {
-            db.userDao().addUser(
-                User(
-                    0,
-                    username.text.toString(),
-                    password.text.toString(),
-                    email.text.toString(),
-                    phonenumber.text.toString(),
-                    birthdate.text.toString()
-                )
-            )
-            finish()
         }
     }
 
