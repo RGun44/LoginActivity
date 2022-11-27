@@ -24,9 +24,14 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+//        val view = binding.root
+//        setContentView(view)
+
+        setContentView(R.layout.activity_home)
         setCurrentFragment(DashboardFragment())
+
+
+
 
         sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
 
@@ -34,8 +39,8 @@ class HomeActivity : AppCompatActivity() {
 
         Toast.makeText(this@HomeActivity,id.toString(),Toast.LENGTH_SHORT).show()
 
-        bottom_navigation.setOnNavigationItemSelectedListener {
-            when(it.itemId){
+        bottom_navigation.setOnItemSelectedListener {
+            when(it){
                 R.id.ic_dashboard->setCurrentFragment(DashboardFragment())
                 R.id.ic_profile->{
                     setCurrentFragment(Profile_Fragment())

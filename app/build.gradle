@@ -91,4 +91,12 @@ dependencies {
 
     //implementasi animation button
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
+
+    //navbar animation
+  //  implementation 'nl.joery.animatedbottombar:library:1.1.0'
+
+    implementation 'com.github.ismaeldivita:chip-navigation-bar:1.4.0'
+
+
+
 }
