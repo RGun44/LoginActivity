@@ -25,6 +25,8 @@ import com.example.loginactivity.Volley.PaketApi
 import com.example.loginactivity.VolleyUser.AddEditProfile
 import com.example.loginactivity.VolleyUser.Profile
 import com.example.loginactivity.VolleyUser.UserApi
+import com.example.loginactivity.databinding.ActivityAddEditProfileBinding
+import com.example.loginactivity.databinding.FragmentProfileBinding
 import com.example.loginactivity.room.UserDB
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_login.*
@@ -40,17 +42,16 @@ class Profile_Fragment : Fragment() {
     var sharedPreferences: SharedPreferences? = null
     private var queue: RequestQueue? = null
 
-    private var username: TextView? = view?.findViewById(R.id.tvname)
-    private var password: TextView? = view?.findViewById(R.id.tvpassword)
-    private var email: TextView? = view?.findViewById(R.id.tvemail)
-    private var phonenumber: TextView? = view?.findViewById(R.id.tvphonenumber)
-    private var birthdate: TextView? = view?.findViewById(R.id.tvbirthdate)
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,25 +70,29 @@ class Profile_Fragment : Fragment() {
 
         btnEdit.setOnClickListener(){
             activity?.let{
-                val intent = Intent (it, AddEditProfile::class.java).apply {
-                    putExtra("Edit",id)
-                }
+                val intent = Intent (it, AddEditProfile::class.java)
                 it.startActivity(intent)
             }
         }
     }
 
     private fun setProfile(id: Long){
+        val username: TextView = binding.tvname
+        val password: TextView = binding.tvpassword
+        val email: TextView = binding.tvemail
+        val phonenumber: TextView = binding.tvphonenumber
+        val birthdate: TextView = binding.tvbirthdate
+
         val stringRequest: StringRequest =
             object : StringRequest(Method.GET, UserApi.GET_BY_ID_URL + id, Response.Listener { response ->
                 val gson = Gson()
                 val profile = gson.fromJson(response, Profile::class.java)
 
-                username?.setText(profile.username)
-                password?.setText(profile.password)
-                email?.setText(profile.email)
-                phonenumber?.setText(profile.phonenumber)
-                birthdate?.setText(profile.birthdate)
+                username.setText(profile.username)
+                password.setText(profile.password)
+                email.setText(profile.email)
+                phonenumber.setText(profile.phonenumber)
+                birthdate.setText(profile.birthdate)
 
             },  Response.ErrorListener { error ->
                 try{

@@ -37,6 +37,7 @@ class AddEditProfile : AppCompatActivity() {
     private val name = "username"
     private val password = "password"
     var sharedPreferences: SharedPreferences? = null
+    var sharedPreferences2: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,23 +55,25 @@ class AddEditProfile : AppCompatActivity() {
 
         //Pendeklarasian shared preferences
         sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
+        sharedPreferences2 = getSharedPreferences("login", Context.MODE_PRIVATE)
 
         val btnCancel = binding.btnCancel
         btnCancel.setOnClickListener{finish() }
         val btnSave = binding.btnSave
         val tvLogo = binding.tvLogo
 
-        val id = intent.getLongExtra("id", -1)
-        if(id== -1L){
+        val id = sharedPreferences2!!.getString("id","")
+        Toast.makeText(this@AddEditProfile,id,Toast.LENGTH_SHORT).show()
+        if(id == ""){
             tvLogo.setText("Sign Up")
             btnSave.setOnClickListener {
                 createUser()
             }
         }else{
             tvLogo.setText("Edit Profile")
-            getUserById(id)
+            getUserById(id!!.toLong())
 
-            btnSave.setOnClickListener { updateUser(id) }
+            btnSave.setOnClickListener { updateUser(id!!.toLong()) }
         }
     }
 
