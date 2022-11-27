@@ -18,6 +18,8 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import com.example.loginactivity.Volley.Paket
 import com.example.loginactivity.VolleyUser.AddEditProfile
 import com.example.loginactivity.VolleyUser.Profile
@@ -82,7 +84,12 @@ class  LoginActivity : AppCompatActivity() {
             val password: String = inputPassword.getEditText()?.getText().toString()
 
             cekLogin(username,password)
+
+            YoYo.with(Techniques.Tada)
+                .duration(500)
+                .playOn(btnLogin);
         }
+
     }
 
     private fun cekLogin(username: String, password: String){
