@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import androidx.core.content.res.ResourcesCompat
 import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -20,6 +21,8 @@ import com.example.loginactivity.databinding.ActivityAddEditProfileBinding
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import org.json.JSONObject
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 import java.nio.charset.StandardCharsets
 
 class AddEditProfile : AppCompatActivity() {
@@ -29,6 +32,7 @@ class AddEditProfile : AppCompatActivity() {
     private var etEmail: EditText? = null
     private var etPhonenumber: EditText? = null
     private var etBirthdate: EditText? = null
+
     private var layoutLoading: LinearLayout? = null
     private var queue: RequestQueue? = null
     private var binding: ActivityAddEditProfileBinding? = null
@@ -63,7 +67,7 @@ class AddEditProfile : AppCompatActivity() {
         val tvLogo = binding.tvLogo
 
         val id = sharedPreferences2!!.getString("id","")
-        Toast.makeText(this@AddEditProfile,id,Toast.LENGTH_SHORT).show()
+//      Toast.makeText(this@AddEditProfile,id,Toast.LENGTH_SHORT).show()
         if(id == ""){
             tvLogo.setText("Sign Up")
             btnSave.setOnClickListener {
@@ -134,7 +138,13 @@ class AddEditProfile : AppCompatActivity() {
                 val profile = gson.fromJson(response, Profile::class.java)
 
                 if(profile!=null)
-                    Toast.makeText(this@AddEditProfile, "Data Berhasil Ditambahkan", Toast.LENGTH_SHORT).show()
+                    MotionToast.createToast(this,
+                        "Register Succes",
+                        "Selamat Datang " + etUsername?.text.toString(),
+                        MotionToastStyle.SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.SHORT_DURATION,
+                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
 
                 val strName: String =
                     etUsername?.text.toString().trim()
@@ -203,9 +213,9 @@ class AddEditProfile : AppCompatActivity() {
             StringRequest(Method.PUT, UserApi.UPDATE_URL + id, Response.Listener{ response ->
                 val gson = Gson()
 
-                val paket = gson.fromJson(response, Profile::class.java)
+                val profile = gson.fromJson(response, Profile::class.java)
 
-                if(paket != null)
+                if(profile != null)
                     Toast.makeText(this@AddEditProfile, "Data Berhasil Diupdate",Toast.LENGTH_SHORT).show()
                 val returnIntent = Intent(this@AddEditProfile, HomeActivity::class.java)
                 setResult(RESULT_OK, returnIntent)

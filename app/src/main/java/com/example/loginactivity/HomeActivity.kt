@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.TextKeyListener.clear
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -27,10 +28,6 @@ class HomeActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_home)
         setCurrentFragment(DashboardFragment())
-
-
-
-
         sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
 
         val id = sharedPreferences!!.getString("id", "")
@@ -46,7 +43,6 @@ class HomeActivity : AppCompatActivity() {
                 R.id.ic_qr->{setCurrentFragment(FragmentQRCode())}
                 R.id.ic_info->setCurrentFragment(InfoFragment())
                 R.id.location->setCurrentFragment(LocationFragment())
-
             }
             true
         }

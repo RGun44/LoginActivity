@@ -42,6 +42,12 @@ class Profile_Fragment : Fragment() {
     var sharedPreferences: SharedPreferences? = null
     private var queue: RequestQueue? = null
 
+    private var username: TextView? = null
+    private var password: TextView? = null
+    private var email: TextView? = null
+    private var phonenumber: TextView? = null
+    private var birthdate: TextView? = null
+
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -59,14 +65,14 @@ class Profile_Fragment : Fragment() {
         queue = Volley.newRequestQueue(requireActivity())
         sharedPreferences = activity?.getSharedPreferences("login", Context.MODE_PRIVATE)
 
+        username = binding.tvname
+        password = binding.tvpassword
+        email = binding.tvemail
+        phonenumber = binding.tvphonenumber
+        birthdate = binding.tvbirthdate
+
         val id = sharedPreferences?.getString("id","")
         setProfile(id!!.toLong())
-
-        Toast.makeText(
-            requireActivity(),
-            id,
-            Toast.LENGTH_SHORT
-        )
 
         btnEdit.setOnClickListener(){
             activity?.let{
@@ -77,28 +83,28 @@ class Profile_Fragment : Fragment() {
     }
 
     private fun setProfile(id: Long){
-        val username: TextView = binding.tvname
-        val password: TextView = binding.tvpassword
-        val email: TextView = binding.tvemail
-        val phonenumber: TextView = binding.tvphonenumber
-        val birthdate: TextView = binding.tvbirthdate
-
         val stringRequest: StringRequest =
             object : StringRequest(Method.GET, UserApi.GET_BY_ID_URL + id, Response.Listener { response ->
                 val gson = Gson()
                 val profile = gson.fromJson(response, Profile::class.java)
 
-                username.setText(profile.username)
-                password.setText(profile.password)
-                email.setText(profile.email)
-                phonenumber.setText(profile.phonenumber)
-                birthdate.setText(profile.birthdate)
+                username!!.setText(profile.username)
+                password!!.setText(profile.password)
+                email!!.setText(profile.email)
+                phonenumber!!.setText(profile.phonenumber)
+                birthdate!!.setText(profile.birthdate)
 
             },  Response.ErrorListener { error ->
                 try{
-
+                    val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
+                    val errors = JSONObject(responseBody)
+                    Toast.makeText(
+                        this.requireActivity(),
+                        errors.getString("message"),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }catch (e: Exception){
-
+                    Toast.makeText(this.requireActivity(), e.message, Toast.LENGTH_SHORT).show()
                 }
             }){
                 @Throws(AuthFailureError::class)

@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import android.content.SharedPreferences
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -31,6 +32,8 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 import java.nio.charset.StandardCharsets
 
 class  LoginActivity : AppCompatActivity() {
@@ -48,6 +51,7 @@ class  LoginActivity : AppCompatActivity() {
     private val name = "username"
     private val password = "password"
     var sharedPreferences: SharedPreferences? = null
+    var sharedPreferences2: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +60,7 @@ class  LoginActivity : AppCompatActivity() {
         setContentView(view)
 
         sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
+        sharedPreferences2 = getSharedPreferences("login", Context.MODE_PRIVATE)
 
         queue = Volley.newRequestQueue(this)
         inputUsername = binding.inputLayoutUsername
@@ -76,6 +81,9 @@ class  LoginActivity : AppCompatActivity() {
 
         btnRegistrasi.setOnClickListener {
             val intent = Intent(this, AddEditProfile::class.java)
+            val editor: SharedPreferences.Editor = sharedPreferences2!!.edit()
+            editor.clear()
+            editor.apply()
             startActivity(intent)
         }
 
@@ -100,6 +108,7 @@ class  LoginActivity : AppCompatActivity() {
                 val jsonObject = JSONObject(response)
                 val jsonData = jsonObject.getJSONArray("data")
                 val profile : Array<Profile> = gson.fromJson(jsonData.toString(),Array<Profile>::class.java)
+                var cek: Int = 0
 
                 for (profile in profile) {
                     if (profile.username == username && profile.password == password){
@@ -107,14 +116,29 @@ class  LoginActivity : AppCompatActivity() {
                         var editor: SharedPreferences.Editor = sharedPreferences!!.edit()
                         editor.putString("id", profile.id.toString())
                         editor.apply()
+                        cek=1
+                        MotionToast.createToast(this,
+                            "Login Success",
+                            "Selamat datang " + profile.username,
+                            MotionToastStyle.SUCCESS,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.SHORT_DURATION,
+                            ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
                         val moveHome = Intent( this@LoginActivity, HomeActivity::class.java)
                         startActivity(moveHome)
                         finish()
                         break;
                     }
-                    else if (profile==null){
-                        Toast.makeText(this@LoginActivity, "Username atau Password salah", Toast.LENGTH_SHORT).show()
-                    }
+                }
+
+                if (cek==0){
+                    MotionToast.createToast(this,
+                        "Invalid Login",
+                        "Username atau Password salah",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.SHORT_DURATION,
+                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
                 }
             },  Response.ErrorListener { error ->
                 try{
