@@ -88,4 +88,7 @@ dependencies {
     implementation 'com.github.librepdf:openpdf:1.3.29'
     //implementasi motion toast
     implementation 'com.github.Spikeysanju:MotionToast:1.4'
+
+    //implementasi animation button
+    implementation 'com.daimajia.androidanimations:library:2.4@aar'
 }
