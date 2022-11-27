@@ -8,6 +8,7 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -20,6 +21,8 @@ import com.example.loginactivity.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import org.json.JSONObject
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 import java.nio.charset.StandardCharsets
 
 class MainActivity : AppCompatActivity() {
@@ -81,10 +84,21 @@ class MainActivity : AppCompatActivity() {
                 srPaket!!.isRefreshing = false
 
                 if (!paket.isEmpty())
-                    Toast.makeText(this@MainActivity, "Data Berhasil Diambil!", Toast.LENGTH_SHORT)
-                        .show()
+                    MotionToast.createToast(this,
+                        "Hurray Berhasil 😍",
+                        "Data Berhasil Diambil",
+                        MotionToastStyle.SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
                 else
-                    Toast.makeText(this@MainActivity, "Data Kosong!", Toast.LENGTH_SHORT).show()
+                    MotionToast.createToast(this,
+                        "Failed ☹️",
+                        "Data Kosong!",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
             }, Response.ErrorListener { error ->
                 srPaket!!.isRefreshing = false
                 try {
@@ -119,8 +133,13 @@ class MainActivity : AppCompatActivity() {
                 val gson = Gson()
                 var paket = gson.fromJson(response, Paket::class.java)
                 if (paket != null)
-                    Toast.makeText(this@MainActivity, "Data Berhasil Dihapus", Toast.LENGTH_SHORT)
-                        .show()
+                    MotionToast.createToast(this,
+                        "Warning ☹️",
+                        "Data Berhasil Dihapus!",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
                 allPaket()
             }, Response.ErrorListener { error ->
                 setLoading(false)

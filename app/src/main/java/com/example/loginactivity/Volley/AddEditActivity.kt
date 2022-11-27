@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import androidx.core.content.res.ResourcesCompat
 import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -14,6 +15,8 @@ import com.android.volley.toolbox.Volley
 import com.example.loginactivity.R
 import com.google.gson.Gson
 import org.json.JSONObject
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 import java.nio.charset.StandardCharsets
 
 class AddEditActivity : AppCompatActivity() {
@@ -88,7 +91,13 @@ class AddEditActivity : AppCompatActivity() {
                 edKecepatan!!.setText(paket.kecepatan)
                 setExposedDropDownMenu()
 
-                Toast.makeText(this@AddEditActivity, "Data berhasil diambil", Toast.LENGTH_SHORT).show()
+                MotionToast.createToast(this,
+                    "Hurray Berhasil 😍",
+                    "Data Berhasil Diambil",
+                    MotionToastStyle.SUCCESS,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
                 setLoading(false)
             },  Response.ErrorListener { error ->
                 setLoading(false)
@@ -131,7 +140,13 @@ class AddEditActivity : AppCompatActivity() {
                 val paket = gson.fromJson(response, Paket::class.java)
 
                 if(paket!=null)
-                    Toast.makeText(this@AddEditActivity, "Data Berhasil Ditambahkan", Toast.LENGTH_SHORT).show()
+                    MotionToast.createToast(this,
+                        "Hurray success 😍",
+                        "Data Berhasil Ditambahkan!",
+                        MotionToastStyle.SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
 
                 val returnIntent = Intent()
                 setResult(RESULT_OK, returnIntent)
@@ -193,7 +208,13 @@ class AddEditActivity : AppCompatActivity() {
                 val paket = gson.fromJson(response, Paket::class.java)
 
                 if(paket != null)
-                    Toast.makeText(this@AddEditActivity, "Data Berhasil Diupdate",Toast.LENGTH_SHORT).show()
+                    MotionToast.createToast(this,
+                        "Hurray success 😍",
+                        "Data Berhasil DiUpdate!",
+                        MotionToastStyle.SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
                 val returnIntent = Intent()
                 setResult(RESULT_OK, returnIntent)
                 finish()
