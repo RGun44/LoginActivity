@@ -11,6 +11,11 @@
         android:title="Profile" />
 
     <item
+        android:id="@+id/ic_qr"
+        android:icon="@drawable/ic_baseline_qr_code_24"
+        android:title="QR Scan" />
+
+    <item
         android:id="@+id/ic_info"
         android:icon="@drawable/ic_baseline_info_24"
         android:title="Info" />

@@ -1,4 +1,4 @@
-package com.example.loginactivity.entity
+package com.example.loginactivity.Volley.entity
 
 class Daerah (var name: String, var jarak: Float, var est_ongkir: Int) {
 
