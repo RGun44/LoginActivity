@@ -124,78 +124,91 @@ class AddEditProfile : AppCompatActivity() {
     private fun createUser(){
         setLoading(true)
 
-        val profile = Profile(
-            etUsername!!.text.toString(),
-            etPassword!!.text.toString(),
-            etEmail!!.text.toString(),
-            etPhonenumber!!.text.toString(),
-            etBirthdate!!.text.toString(),
-        )
+        if (etUsername!!.toString().isEmpty()){
+            Toast.makeText(this@AddEditProfile, "Username tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+        }else if (etPassword!!.toString().isEmpty()){
+            Toast.makeText(this@AddEditProfile, "Password tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+        }else if(etEmail!!.toString().isEmpty()){
+            Toast.makeText(this@AddEditProfile, "Email tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+        }else if(etBirthdate!!.toString().isEmpty()){
+            Toast.makeText(this@AddEditProfile, "Birthdate tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+        }else if(etPhonenumber!!.toString().isEmpty()){
+            Toast.makeText(this@AddEditProfile, "Phone Number tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+        }else{
+            val profile = Profile(
+                etUsername!!.text.toString(),
+                etPassword!!.text.toString(),
+                etEmail!!.text.toString(),
+                etPhonenumber!!.text.toString(),
+                etBirthdate!!.text.toString(),
+            )
 
-        val stringRequest: StringRequest =
-            object: StringRequest(Method.POST, UserApi.ADD_URL, Response.Listener { response->
-                val gson = Gson()
-                val profile = gson.fromJson(response, Profile::class.java)
-
-                if(profile!=null)
-                    MotionToast.createToast(this,
-                        "Register Succes",
-                        "Selamat Datang " + etUsername?.text.toString(),
-                        MotionToastStyle.SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.SHORT_DURATION,
-                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
-
-                val strName: String =
-                    etUsername?.text.toString().trim()
-                val strEmail: String =
-                    etPassword?.text.toString().trim()
-                val editor: SharedPreferences.Editor =
-                    sharedPreferences!!.edit()
-                editor.putString(name, strName)
-                editor.putString(password, strEmail)
-                editor.apply()
-                val returnIntent = Intent(this@AddEditProfile, LoginActivity::class.java)
-
-                setResult(RESULT_OK, returnIntent)
-                finish()
-
-                setLoading(false)
-            }, Response.ErrorListener { error->
-                setLoading(false)
-                try{
-                    val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
-                    val errors = JSONObject(responseBody)
-                    Toast.makeText(
-                        this@AddEditProfile,
-                        errors.getString("message"),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }catch (e:Exception){
-                    Toast.makeText(this@AddEditProfile, e.message, Toast.LENGTH_SHORT).show()
-                }
-            }) {
-                @Throws(AuthFailureError::class)
-                override fun getHeaders(): MutableMap<String, String> {
-                    val headers = HashMap<String, String>()
-                    headers["Accept"] = "application/json"
-                    return headers
-
-                }
-
-                @Throws(AuthFailureError::class)
-                override fun getBody(): ByteArray {
+            val stringRequest: StringRequest =
+                object: StringRequest(Method.POST, UserApi.ADD_URL, Response.Listener { response->
                     val gson = Gson()
-                    val requestBody = gson.toJson(profile)
-                    return requestBody.toByteArray(StandardCharsets.UTF_8)
-                }
+                    val profile = gson.fromJson(response, Profile::class.java)
 
-                override fun getBodyContentType(): String {
-                    return "application/json"
+                    if(profile!=null)
+                        MotionToast.createToast(this,
+                            "Register Succes",
+                            "Selamat Datang " + etUsername?.text.toString(),
+                            MotionToastStyle.SUCCESS,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.SHORT_DURATION,
+                            ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
+
+                    val strName: String =
+                        etUsername?.text.toString().trim()
+                    val strEmail: String =
+                        etPassword?.text.toString().trim()
+                    val editor: SharedPreferences.Editor =
+                        sharedPreferences!!.edit()
+                    editor.putString(name, strName)
+                    editor.putString(password, strEmail)
+                    editor.apply()
+                    val returnIntent = Intent(this@AddEditProfile, LoginActivity::class.java)
+
+                    setResult(RESULT_OK, returnIntent)
+                    finish()
+
+                    setLoading(false)
+                }, Response.ErrorListener { error->
+                    setLoading(false)
+                    try{
+                        val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
+                        val errors = JSONObject(responseBody)
+                        Toast.makeText(
+                            this@AddEditProfile,
+                            errors.getString("message"),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }catch (e:Exception){
+                        Toast.makeText(this@AddEditProfile, e.message, Toast.LENGTH_SHORT).show()
+                    }
+                }) {
+                    @Throws(AuthFailureError::class)
+                    override fun getHeaders(): MutableMap<String, String> {
+                        val headers = HashMap<String, String>()
+                        headers["Accept"] = "application/json"
+                        return headers
+
+                    }
+
+                    @Throws(AuthFailureError::class)
+                    override fun getBody(): ByteArray {
+                        val gson = Gson()
+                        val requestBody = gson.toJson(profile)
+                        return requestBody.toByteArray(StandardCharsets.UTF_8)
+                    }
+
+                    override fun getBodyContentType(): String {
+                        return "application/json"
+                    }
                 }
-            }
-        // Menambahkan request ke request queue
-        queue!!.add(stringRequest)
+            // Menambahkan request ke request queue
+            queue!!.add(stringRequest)
+        }
+        setLoading(false)
     }
 
     private fun updateUser(id: Long){

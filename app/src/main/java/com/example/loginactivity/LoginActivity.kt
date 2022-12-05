@@ -11,7 +11,10 @@ import com.example.loginactivity.room.User
 import com.example.loginactivity.room.UserDB
 import com.google.android.material.snackbar.Snackbar
 import android.content.SharedPreferences
+import android.view.View
+import android.view.WindowManager
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import com.android.volley.AuthFailureError
@@ -52,6 +55,7 @@ class  LoginActivity : AppCompatActivity() {
     private val password = "password"
     var sharedPreferences: SharedPreferences? = null
     var sharedPreferences2: SharedPreferences? = null
+    private var layoutLoading: LinearLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +72,7 @@ class  LoginActivity : AppCompatActivity() {
         editTextPassword = binding.etPassword
         editTextName = binding.etUsername
         mainLayout = binding.mainLayout
+        layoutLoading = findViewById(R.id.layout_loading)
 
         if (sharedPreferences!!.contains(name)) {
             editTextName?.setText(sharedPreferences!!.getString(name, ""))
@@ -102,64 +107,86 @@ class  LoginActivity : AppCompatActivity() {
 
     private fun cekLogin(username: String, password: String){
         // Fungsi untuk menampilkan data user berdasarkan id
-        val stringRequest: StringRequest =
-            object : StringRequest(Method.GET, UserApi.GET_ALL_URL, Response.Listener { response ->
-                val gson = Gson()
-                val jsonObject = JSONObject(response)
-                val jsonData = jsonObject.getJSONArray("data")
-                val profile : Array<Profile> = gson.fromJson(jsonData.toString(),Array<Profile>::class.java)
-                var cek: Int = 0
+        setLoading(true)
 
-                for (profile in profile) {
-                    if (profile.username == username && profile.password == password){
-                        sharedPreferences = this.getSharedPreferences("login", Context.MODE_PRIVATE)
-                        var editor: SharedPreferences.Editor = sharedPreferences!!.edit()
-                        editor.putString("id", profile.id.toString())
-                        editor.apply()
-                        cek=1
+        if (inputUsername!!.toString().isEmpty()){
+            Toast.makeText(this@LoginActivity, "Username tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+        }else if (inputPassword!!.toString().isEmpty()){
+            Toast.makeText(this@LoginActivity, "Password tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+        }else{
+            val stringRequest: StringRequest =
+                object : StringRequest(Method.GET, UserApi.GET_ALL_URL, Response.Listener { response ->
+                    val gson = Gson()
+                    val jsonObject = JSONObject(response)
+                    val jsonData = jsonObject.getJSONArray("data")
+                    val profile : Array<Profile> = gson.fromJson(jsonData.toString(),Array<Profile>::class.java)
+                    var cek: Int = 0
+
+                    for (profile in profile) {
+                        if (profile.username == username && profile.password == password){
+                            sharedPreferences = this.getSharedPreferences("login", Context.MODE_PRIVATE)
+                            var editor: SharedPreferences.Editor = sharedPreferences!!.edit()
+                            editor.putString("id", profile.id.toString())
+                            editor.apply()
+                            cek=1
+                            MotionToast.createToast(this,
+                                "Login Success",
+                                "Selamat datang " + profile.username,
+                                MotionToastStyle.SUCCESS,
+                                MotionToast.GRAVITY_BOTTOM,
+                                MotionToast.SHORT_DURATION,
+                                ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
+                            val moveHome = Intent( this@LoginActivity, HomeActivity::class.java)
+                            startActivity(moveHome)
+                            finish()
+                            break;
+                        }
+                    }
+
+                    if (cek==0){
                         MotionToast.createToast(this,
-                            "Login Success",
-                            "Selamat datang " + profile.username,
-                            MotionToastStyle.SUCCESS,
+                            "Invalid Login",
+                            "Username atau Password salah",
+                            MotionToastStyle.ERROR,
                             MotionToast.GRAVITY_BOTTOM,
                             MotionToast.SHORT_DURATION,
                             ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
-                        val moveHome = Intent( this@LoginActivity, HomeActivity::class.java)
-                        startActivity(moveHome)
-                        finish()
-                        break;
+                    }
+                },  Response.ErrorListener { error ->
+                    try{
+                        val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
+                        val errors = JSONObject(responseBody)
+                        Toast.makeText(
+                            this@LoginActivity,
+                            errors.getString("message"),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }catch (e: Exception){
+                        Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_SHORT).show()
+                    }
+                }){
+                    @Throws(AuthFailureError::class)
+                    override fun getHeaders(): MutableMap<String, String> {
+                        val headers = HashMap<String, String>()
+                        headers["Accept"] = "application/json"
+                        return headers
                     }
                 }
+            queue!!.add(stringRequest)
+        }
+        setLoading(false)
+    }
 
-                if (cek==0){
-                    MotionToast.createToast(this,
-                        "Invalid Login",
-                        "Username atau Password salah",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.SHORT_DURATION,
-                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
-                }
-            },  Response.ErrorListener { error ->
-                try{
-                    val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
-                    val errors = JSONObject(responseBody)
-                    Toast.makeText(
-                        this@LoginActivity,
-                        errors.getString("message"),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }catch (e: Exception){
-                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_SHORT).show()
-                }
-            }){
-                @Throws(AuthFailureError::class)
-                override fun getHeaders(): MutableMap<String, String> {
-                    val headers = HashMap<String, String>()
-                    headers["Accept"] = "application/json"
-                    return headers
-                }
-            }
-        queue!!.add(stringRequest)
+    private fun setLoading(isLoading: Boolean){
+        if(isLoading){
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+            layoutLoading!!.visibility = View.VISIBLE
+        }else{
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            layoutLoading!!.visibility = View.INVISIBLE
+        }
     }
 }
