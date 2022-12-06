@@ -124,17 +124,24 @@ class AddEditProfile : AppCompatActivity() {
     private fun createUser(){
         setLoading(true)
 
-        if (etUsername!!.toString().isEmpty()){
+        if(etUsername!!.text.toString().isEmpty()) {
             Toast.makeText(this@AddEditProfile, "Username tidak boleh kosong!", Toast.LENGTH_SHORT).show()
-        }else if (etPassword!!.toString().isEmpty()){
+        }
+        else if(etPassword!!.text.toString().isEmpty()) {
             Toast.makeText(this@AddEditProfile, "Password tidak boleh kosong!", Toast.LENGTH_SHORT).show()
-        }else if(etEmail!!.toString().isEmpty()){
+        }
+        else if(etEmail!!.text.toString().isEmpty()) {
             Toast.makeText(this@AddEditProfile, "Email tidak boleh kosong!", Toast.LENGTH_SHORT).show()
-        }else if(etBirthdate!!.toString().isEmpty()){
-            Toast.makeText(this@AddEditProfile, "Birthdate tidak boleh kosong!", Toast.LENGTH_SHORT).show()
-        }else if(etPhonenumber!!.toString().isEmpty()){
+        }
+        else if(etPhonenumber!!.text.toString().isEmpty()) {
             Toast.makeText(this@AddEditProfile, "Phone Number tidak boleh kosong!", Toast.LENGTH_SHORT).show()
-        }else{
+        }
+
+        else if(etBirthdate!!.text.toString().isEmpty()) {
+            Toast.makeText(this@AddEditProfile, "Birthdate tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+        }
+
+        else{
             val profile = Profile(
                 etUsername!!.text.toString(),
                 etPassword!!.text.toString(),

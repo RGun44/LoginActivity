@@ -32,6 +32,11 @@ class AddEditProfileTest {
 
     @Test
     fun addEditProfileTest() {
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        Thread.sleep(500)
+
         val materialButton = onView(
             allOf(
                 withId(R.id.btn_save), withText("Simpan"),
@@ -63,7 +68,7 @@ class AddEditProfileTest {
                 )
             )
         )
-        textInputEditText.perform(scrollTo(), replaceText("lala"), closeSoftKeyboard())
+        textInputEditText.perform(scrollTo(), replaceText("jeremy"), closeSoftKeyboard())
 
         val materialButton2 = onView(
             allOf(
@@ -129,7 +134,7 @@ class AddEditProfileTest {
                 )
             )
         )
-        textInputEditText3.perform(scrollTo(), replaceText("lala@gmail.com"), closeSoftKeyboard())
+        textInputEditText3.perform(scrollTo(), replaceText("jeremy@gmail.com"), closeSoftKeyboard())
 
         val materialButton4 = onView(
             allOf(
@@ -162,7 +167,7 @@ class AddEditProfileTest {
                 )
             )
         )
-        textInputEditText4.perform(scrollTo(), replaceText("082136661034"), closeSoftKeyboard())
+        textInputEditText4.perform(scrollTo(), replaceText("1234"), closeSoftKeyboard())
 
         val materialButton5 = onView(
             allOf(
@@ -195,7 +200,7 @@ class AddEditProfileTest {
                 )
             )
         )
-        textInputEditText5.perform(scrollTo(), replaceText("12/06/2002"), closeSoftKeyboard())
+        textInputEditText5.perform(scrollTo(), replaceText("10/06/2001"), closeSoftKeyboard())
 
         val materialButton6 = onView(
             allOf(
@@ -234,6 +239,7 @@ class AddEditProfileTest {
             }
         }
     }
+
     fun waitFor(delay: Long): ViewAction? {
         return object : ViewAction {
             override fun getConstraints(): Matcher<View> {
@@ -241,11 +247,11 @@ class AddEditProfileTest {
             }
 
             override fun getDescription(): String {
-                return "Wait for $delay milliseconds."
+                return "wait for " + delay + "milliseconds"
             }
 
-            override fun perform(uiController: UiController?, view: View?) {
-                uiController?.loopMainThreadForAtLeast(delay)
+            override fun perform(uiController: UiController, view: View) {
+                uiController.loopMainThreadForAtLeast(delay)
             }
         }
     }
