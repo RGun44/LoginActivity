@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
@@ -130,15 +131,15 @@ class AddEditProfile : AppCompatActivity() {
         else if(etPassword!!.text.toString().isEmpty()) {
             Toast.makeText(this@AddEditProfile, "Password tidak boleh kosong!", Toast.LENGTH_SHORT).show()
         }
-        else if(etEmail!!.text.toString().isEmpty()) {
+        else if(etEmail!!.text.toString().isEmpty() || etEmail!!.text.toString().isValidEmail() ) {
             Toast.makeText(this@AddEditProfile, "Email tidak boleh kosong!", Toast.LENGTH_SHORT).show()
         }
-        else if(etPhonenumber!!.text.toString().isEmpty()) {
-            Toast.makeText(this@AddEditProfile, "Phone Number tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+        else if(etPhonenumber!!.text.toString().isEmpty() || etPhonenumber!!.text.toString().length <11 || etPhonenumber!!.text.toString().length >13 ) {
+            Toast.makeText(this@AddEditProfile, "Phone Number tidak boleh kosong atau minimal 11 angka sampai 13 angka", Toast.LENGTH_SHORT).show()
         }
 
         else if(etBirthdate!!.text.toString().isEmpty()) {
-            Toast.makeText(this@AddEditProfile, "Birthdate tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@AddEditProfile, "Tanggal Lahir tidak boleh kosong!", Toast.LENGTH_SHORT).show()
         }
 
         else{
@@ -290,4 +291,5 @@ class AddEditProfile : AppCompatActivity() {
             layoutLoading!!.visibility = View.INVISIBLE
         }
     }
+    fun CharSequence?.isValidEmail() = !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }
