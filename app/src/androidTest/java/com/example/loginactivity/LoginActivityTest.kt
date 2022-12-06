@@ -30,6 +30,11 @@ class LoginActivityTest {
 
     @Test
     fun loginActivityTest() {
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        Thread.sleep(500)
+
         val materialButton = onView(
             allOf(
                 withId(R.id.btnLogin), withText("Login"),
@@ -61,7 +66,22 @@ class LoginActivityTest {
                 isDisplayed()
             )
         )
-        textInputEditText.perform(replaceText("test"), closeSoftKeyboard())
+        textInputEditText.perform(click())
+
+        val textInputEditText2 = onView(
+            allOf(
+                withId(R.id.et_username),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.inputLayoutUsername),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        textInputEditText2.perform(replaceText("jeremy"), closeSoftKeyboard())
 
         val materialButton2 = onView(
             allOf(
@@ -81,7 +101,7 @@ class LoginActivityTest {
         materialButton2.perform(scrollTo(), click())
         onView(isRoot()).perform(waitFor(3000))
 
-        val textInputEditText2 = onView(
+        val textInputEditText3 = onView(
             allOf(
                 withId(R.id.et_password),
                 childAtPosition(
@@ -94,7 +114,7 @@ class LoginActivityTest {
                 isDisplayed()
             )
         )
-        textInputEditText2.perform(replaceText("123"), closeSoftKeyboard())
+        textInputEditText3.perform(replaceText("1234"), closeSoftKeyboard())
 
         val materialButton3 = onView(
             allOf(
@@ -140,11 +160,11 @@ class LoginActivityTest {
             }
 
             override fun getDescription(): String {
-                return "Wait for $delay milliseconds."
+                return "wait for " + delay + "milliseconds"
             }
 
-            override fun perform(uiController: UiController?, view: View?) {
-                uiController?.loopMainThreadForAtLeast(delay)
+            override fun perform(uiController: UiController, view: View) {
+                uiController.loopMainThreadForAtLeast(delay)
             }
         }
     }
