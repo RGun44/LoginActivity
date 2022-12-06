@@ -14,6 +14,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.loginactivity.R
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_add_edit.*
 import org.json.JSONObject
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
@@ -123,72 +124,101 @@ class AddEditActivity : AppCompatActivity() {
         queue!!.add(stringRequest)
     }
 
-    private fun createPaket(){
+    private fun createPaket() {
         setLoading(true)
 
-        val paket = Paket(
-            etId!!.text.toString(),
-            etDaerahAsal!!.text.toString(),
-            etDaerahTujuan!!.text.toString(),
-            etBeratPaket!!.text.toString(),
-            edKecepatan!!.text.toString()
+        if (etDaerahAsal!!.text.toString().isEmpty()) {
+            Toast.makeText(this@AddEditActivity, "Daerah Asal tidak boleh kosong!", Toast.LENGTH_SHORT)
+                .show()
+        } else if (etDaerahTujuan!!.text.toString().isEmpty()) {
+            Toast.makeText(this@AddEditActivity, "Daerah Tujuan tidak boleh kosong!", Toast.LENGTH_SHORT)
+                .show()
+        } else if (etBeratPaket!!.text.toString().isEmpty()) {
+            Toast.makeText(
+                this@AddEditActivity,
+                "Berat Paket tidak boleh kosong!",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else if (ed_kecepatan!!.text.toString().isEmpty()) {
+            Toast.makeText(this@AddEditActivity, "Kecepatan tidak boleh kosong!", Toast.LENGTH_SHORT)
+                .show()
+        } else {
 
-        )
-        val stringRequest: StringRequest =
-            object: StringRequest(Method.POST, PaketApi.ADD_URL, Response.Listener {response->
-                val gson = Gson()
-                val paket = gson.fromJson(response, Paket::class.java)
+            val paket = Paket(
+                etId!!.text.toString(),
+                etDaerahAsal!!.text.toString(),
+                etDaerahTujuan!!.text.toString(),
+                etBeratPaket!!.text.toString(),
+                edKecepatan!!.text.toString()
 
-                if(paket!=null)
-                    MotionToast.createToast(this,
-                        "Hurray success 😍",
-                        "Data Berhasil Ditambahkan!",
-                        MotionToastStyle.SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
+            )
+            val stringRequest: StringRequest =
+                object :
+                    StringRequest(Method.POST, PaketApi.ADD_URL, Response.Listener { response ->
+                        val gson = Gson()
+                        val paket = gson.fromJson(response, Paket::class.java)
 
-                val returnIntent = Intent()
-                setResult(RESULT_OK, returnIntent)
-                finish()
+                        if (paket != null)
+                            MotionToast.createToast(
+                                this,
+                                "Hurray success 😍",
+                                "Data Berhasil Ditambahkan!",
+                                MotionToastStyle.SUCCESS,
+                                MotionToast.GRAVITY_BOTTOM,
+                                MotionToast.LONG_DURATION,
+                                ResourcesCompat.getFont(
+                                    this,
+                                    www.sanju.motiontoast.R.font.helvetica_regular
+                                )
+                            )
 
-                setLoading(false)
-            }, Response.ErrorListener { error->
-                setLoading(false)
-                try{
-                    val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
-                    val errors = JSONObject(responseBody)
-                    Toast.makeText(
-                        this@AddEditActivity,
-                        errors.getString("message"),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }catch (e:Exception){
-                    Toast.makeText(this@AddEditActivity, e.message, Toast.LENGTH_SHORT).show()
+                        val returnIntent = Intent()
+                        setResult(RESULT_OK, returnIntent)
+                        finish()
+
+                        setLoading(false)
+                    }, Response.ErrorListener { error ->
+                        setLoading(false)
+                        try {
+                            val responseBody =
+                                String(error.networkResponse.data, StandardCharsets.UTF_8)
+                            val errors = JSONObject(responseBody)
+                            Toast.makeText(
+                                this@AddEditActivity,
+                                errors.getString("message"),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } catch (e: Exception) {
+                            Toast.makeText(this@AddEditActivity, e.message, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }) {
+                    @Throws(AuthFailureError::class)
+                    override fun getHeaders(): MutableMap<String, String> {
+                        val headers = HashMap<String, String>()
+                        headers["Accept"] = "application/json"
+                        return headers
+
+                    }
+
+                    @Throws(AuthFailureError::class)
+                    override fun getBody(): ByteArray {
+                        val gson = Gson()
+                        val requestBody = gson.toJson(paket)
+                        return requestBody.toByteArray(StandardCharsets.UTF_8)
+                    }
+
+                    override fun getBodyContentType(): String {
+                        return "application/json"
+                    }
                 }
-            }) {
-                @Throws(AuthFailureError::class)
-                override fun getHeaders(): MutableMap<String, String> {
-                    val headers = HashMap<String, String>()
-                    headers["Accept"] = "application/json"
-                    return headers
+            // Menambahkan request ke request queue
+            queue!!.add(stringRequest)
+        }
 
-                }
-
-                @Throws(AuthFailureError::class)
-                override fun getBody(): ByteArray {
-                    val gson = Gson()
-                    val requestBody = gson.toJson(paket)
-                    return requestBody.toByteArray(StandardCharsets.UTF_8)
-                }
-
-                override fun getBodyContentType(): String {
-                    return "application/json"
-                }
-            }
-        // Menambahkan request ke request queue
-        queue!!.add(stringRequest)
+        setLoading(false)
     }
+
 
     private fun updatePaket(id: Long){
         setLoading(true)
