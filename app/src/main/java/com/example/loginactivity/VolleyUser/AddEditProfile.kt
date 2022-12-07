@@ -131,13 +131,12 @@ class AddEditProfile : AppCompatActivity() {
         else if(etPassword!!.text.toString().isEmpty()) {
             Toast.makeText(this@AddEditProfile, "Password tidak boleh kosong!", Toast.LENGTH_SHORT).show()
         }
-        else if(etEmail!!.text.toString().isEmpty() || etEmail!!.text.toString().isValidEmail() ) {
-            Toast.makeText(this@AddEditProfile, "Email tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+        else if(!etEmail!!.text.toString().isValidEmail() ) {
+            Toast.makeText(this@AddEditProfile, "Email harus dengan format @", Toast.LENGTH_SHORT).show()
         }
         else if(etPhonenumber!!.text.toString().isEmpty() || etPhonenumber!!.text.toString().length <11 || etPhonenumber!!.text.toString().length >13 ) {
             Toast.makeText(this@AddEditProfile, "Phone Number tidak boleh kosong atau minimal 11 angka sampai 13 angka", Toast.LENGTH_SHORT).show()
         }
-
         else if(etBirthdate!!.text.toString().isEmpty()) {
             Toast.makeText(this@AddEditProfile, "Tanggal Lahir tidak boleh kosong!", Toast.LENGTH_SHORT).show()
         }

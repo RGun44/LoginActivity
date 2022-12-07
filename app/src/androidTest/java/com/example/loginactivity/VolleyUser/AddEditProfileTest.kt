@@ -101,7 +101,7 @@ class AddEditProfileTest {
                 )
             )
         )
-        textInputEditText2.perform(scrollTo(), replaceText("123"), closeSoftKeyboard())
+        textInputEditText2.perform(scrollTo(), replaceText("jer"), closeSoftKeyboard())
 
         val materialButton3 = onView(
             allOf(
@@ -134,7 +134,7 @@ class AddEditProfileTest {
                 )
             )
         )
-        textInputEditText3.perform(scrollTo(), replaceText("jeremy@gmail.com"), closeSoftKeyboard())
+        textInputEditText3.perform(scrollTo(), replaceText("jer@gmail.com"), closeSoftKeyboard())
 
         val materialButton4 = onView(
             allOf(
@@ -167,7 +167,7 @@ class AddEditProfileTest {
                 )
             )
         )
-        textInputEditText4.perform(scrollTo(), replaceText("1234"), closeSoftKeyboard())
+        textInputEditText4.perform(scrollTo(), replaceText("12345678999"), closeSoftKeyboard())
 
         val materialButton5 = onView(
             allOf(
@@ -200,7 +200,21 @@ class AddEditProfileTest {
                 )
             )
         )
-        textInputEditText5.perform(scrollTo(), replaceText("10/06/2001"), closeSoftKeyboard())
+        textInputEditText5.perform(scrollTo(), click())
+
+        val textInputEditText6 = onView(
+            allOf(
+                withId(R.id.et_birthdate),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.layout_birthdate),
+                        0
+                    ),
+                    0
+                )
+            )
+        )
+        textInputEditText6.perform(replaceText("12/12/2002"), closeSoftKeyboard())
 
         val materialButton6 = onView(
             allOf(
