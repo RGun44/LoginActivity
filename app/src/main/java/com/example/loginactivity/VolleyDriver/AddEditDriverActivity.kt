@@ -28,6 +28,7 @@ class AddEditDriverActivity : AppCompatActivity() {
     private var edAlamat: EditText? = null
     private var layoutLoading: LinearLayout? = null
 
+
     private var queue: RequestQueue? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
