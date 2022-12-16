@@ -67,7 +67,7 @@ class AddEditProfile : AppCompatActivity() {
         val btnSave = binding.btnSave
         val tvLogo = binding.tvLogo
 
-        val id = sharedPreferences2!!.getString("id","")
+        val id = sharedPreferences!!.getString("id","")
 //      Toast.makeText(this@AddEditProfile,id,Toast.LENGTH_SHORT).show()
         if(id == ""){
             tvLogo.setText("Sign Up")
@@ -87,14 +87,17 @@ class AddEditProfile : AppCompatActivity() {
         setLoading(true)
         val stringRequest: StringRequest =
             object : StringRequest(Method.GET, UserApi.GET_BY_ID_URL + id, Response.Listener { response ->
-                val gson = Gson()
-                val profile = gson.fromJson(response, Profile::class.java)
+//                val gson = Gson()
+//                val profile = gson.fromJson(response, Profile::class.java)
 
-                etUsername!!.setText(profile.username)
-                etPassword!!.setText(profile.password)
-                etEmail!!.setText(profile.email)
-                etPhonenumber!!.setText(profile.phonenumber)
-                etBirthdate!!.setText(profile.birthdate)
+                var joUser = JSONObject(response.toString())
+                val userdata = joUser.getJSONObject("data")
+
+                etUsername!!.setText(userdata.getString("username"))
+                etPassword!!.setText(userdata.getString("password"))
+                etEmail!!.setText(userdata.getString("email"))
+                etPhonenumber!!.setText(userdata.getString("phonenumber"))
+                etBirthdate!!.setText(userdata.getString("birthdate"))
 
                 Toast.makeText(this@AddEditProfile, "Data berhasil diambil", Toast.LENGTH_SHORT).show()
                 setLoading(false)
@@ -170,8 +173,8 @@ class AddEditProfile : AppCompatActivity() {
                         etPassword?.text.toString().trim()
                     val editor: SharedPreferences.Editor =
                         sharedPreferences!!.edit()
-                    editor.putString(name, strName)
-                    editor.putString(password, strEmail)
+                    editor.putString(name, etUsername!!.text.toString())
+                    editor.putString(password, etPassword!!.text.toString())
                     editor.apply()
                     val returnIntent = Intent(this@AddEditProfile, LoginActivity::class.java)
 
@@ -235,12 +238,17 @@ class AddEditProfile : AppCompatActivity() {
 
                 val profile = gson.fromJson(response, Profile::class.java)
 
-                if(profile != null)
+                if(profile != null) {
+                    var joUser = JSONObject(response.toString())
+                    val userdata = joUser.getJSONObject("data")
                     Toast.makeText(this@AddEditProfile, "Data Berhasil Diupdate",Toast.LENGTH_SHORT).show()
-                val returnIntent = Intent(this@AddEditProfile, HomeActivity::class.java)
-                setResult(RESULT_OK, returnIntent)
-                finish()
-
+                    var editor: SharedPreferences.Editor = sharedPreferences!!.edit()
+                    editor.putString("id", userdata.getInt("id").toString())
+                    editor.apply()
+                    val returnIntent = Intent(this@AddEditProfile, HomeActivity::class.java)
+                    setResult(RESULT_OK, returnIntent)
+                    finish()
+                }
                 setLoading(false)
             }, Response.ErrorListener{ error->
                 setLoading(false)

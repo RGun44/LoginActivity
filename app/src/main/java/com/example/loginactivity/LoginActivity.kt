@@ -109,48 +109,84 @@ class  LoginActivity : AppCompatActivity() {
         // Fungsi untuk menampilkan data user berdasarkan id
         setLoading(true)
 
-        if (inputUsername!!.toString().isEmpty()){
+        if (inputUsername.getEditText()?.getText().toString().isEmpty()){
             Toast.makeText(this@LoginActivity, "Username tidak boleh kosong!", Toast.LENGTH_SHORT).show()
-        }else if (inputPassword!!.toString().isEmpty()){
+        }else if (inputPassword.getEditText()?.getText().toString().isEmpty()){
             Toast.makeText(this@LoginActivity, "Password tidak boleh kosong!", Toast.LENGTH_SHORT).show()
         }else{
-            val stringRequest: StringRequest =
-                object : StringRequest(Method.GET, UserApi.GET_ALL_URL, Response.Listener { response ->
-                    val gson = Gson()
-                    val jsonObject = JSONObject(response)
-                    val jsonData = jsonObject.getJSONArray("data")
-                    val profile : Array<Profile> = gson.fromJson(jsonData.toString(),Array<Profile>::class.java)
-                    var cek: Int = 0
+            val profil = Profile(
+                inputUsername.getEditText()?.getText().toString(),
+                inputPassword.getEditText()?.getText().toString(),
+                "",
+                "",
+                "",
+            )
 
-                    for (profile in profile) {
-                        if (profile.username == username && profile.password == password){
-                            sharedPreferences = this.getSharedPreferences("login", Context.MODE_PRIVATE)
-                            var editor: SharedPreferences.Editor = sharedPreferences!!.edit()
-                            editor.putString("id", profile.id.toString())
-                            editor.apply()
-                            cek=1
-                            MotionToast.createToast(this,
+            val stringRequest: StringRequest =
+                object : StringRequest(Method.POST, UserApi.LOGIN, Response.Listener { response ->
+                    val gson = Gson()
+                    var user = gson.fromJson(response, Profile::class.java)
+
+//                    val jsonObject = JSONObject(response)
+//                    val jsonData = jsonObject.getJSONArray("data")
+//                    val profile : Array<Profile> = gson.fromJson(response,Array<Profile>::class.java)
+//                    var cek: Int = 0
+
+//                    for (profile in profile) {
+//                        if (profile.username == username && profile.password == password){
+//                            sharedPreferences = this.getSharedPreferences("login", Context.MODE_PRIVATE)
+//                            var editor: SharedPreferences.Editor = sharedPreferences!!.edit()
+//                            editor.putString("id", profile.id.toString())
+//                            editor.apply()
+//                            cek=1
+//                            MotionToast.createToast(this,
+//                                "Login Success",
+//                                "Selamat datang " + profile.username,
+//                                MotionToastStyle.SUCCESS,
+//                                MotionToast.GRAVITY_BOTTOM,
+//                                MotionToast.SHORT_DURATION,
+//                                ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
+//                            val moveHome = Intent( this@LoginActivity, HomeActivity::class.java)
+//                            startActivity(moveHome)
+//                            finish()
+//                            break;
+//                        }
+//                    }
+//
+//                    if (cek==0){
+//                        MotionToast.createToast(this,
+//                            "Invalid Login",
+//                            "Username atau Password salah",
+//                            MotionToastStyle.ERROR,
+//                            MotionToast.GRAVITY_BOTTOM,
+//                            MotionToast.SHORT_DURATION,
+//                            ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
+//                    }
+                    if(user!=null) {
+                        var JO = JSONObject(response.toString())
+                        val  userobj = JO.getJSONObject("data")
+
+                        MotionToast.createToast(this,
                                 "Login Success",
-                                "Selamat datang " + profile.username,
+                                "Selamat datang " + userobj.getString("username"),
                                 MotionToastStyle.SUCCESS,
                                 MotionToast.GRAVITY_BOTTOM,
                                 MotionToast.SHORT_DURATION,
                                 ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
-                            val moveHome = Intent( this@LoginActivity, HomeActivity::class.java)
-                            startActivity(moveHome)
-                            finish()
-                            break;
-                        }
-                    }
-
-                    if (cek==0){
-                        MotionToast.createToast(this,
-                            "Invalid Login",
-                            "Username atau Password salah",
+                        val moveHome = Intent( this@LoginActivity, HomeActivity::class.java)
+                        var editor: SharedPreferences.Editor = sharedPreferences!!.edit()
+                        editor.putString("id", userobj.getInt("id").toString())
+                        editor.apply()
+                        startActivity(moveHome)
+                        finish()
+                    }else {
+                        MotionToast.darkColorToast(this,"Notification Login!",
+                            "Login Gagal!!",
                             MotionToastStyle.ERROR,
                             MotionToast.GRAVITY_BOTTOM,
-                            MotionToast.SHORT_DURATION,
+                            MotionToast.LONG_DURATION,
                             ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
+                        return@Listener
                     }
                 },  Response.ErrorListener { error ->
                     try{
@@ -170,6 +206,16 @@ class  LoginActivity : AppCompatActivity() {
                         val headers = HashMap<String, String>()
                         headers["Accept"] = "application/json"
                         return headers
+                    }
+                    @Throws(AuthFailureError::class)
+                    override fun getBody(): ByteArray {
+                        val gson = Gson()
+                        val requestBody = gson.toJson(profil)
+                        return requestBody.toByteArray(StandardCharsets.UTF_8)
+                    }
+
+                    override fun getBodyContentType(): String {
+                        return "application/json"
                     }
                 }
             queue!!.add(stringRequest)

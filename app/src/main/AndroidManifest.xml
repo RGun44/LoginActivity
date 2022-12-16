@@ -30,6 +30,21 @@
         android:theme="@style/Theme.LoginActivity"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <activity
+            android:name=".VolleyDriver.MainDriverActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".VolleyDriver.AddEditDriverActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".VolleyUser.AddEditProfile"
             android:exported="true">
