@@ -85,13 +85,6 @@ class  LoginActivity : AppCompatActivity() {
         val btnRegistrasi = binding.btnRegistrasi
 
         btnRegistrasi.setOnClickListener {
-            val editor: SharedPreferences.Editor = sharedPreferences2!!.edit()
-            editor.clear()
-            editor.apply()
-
-            val editor2: SharedPreferences.Editor = sharedPreferences!!.edit()
-            editor2.clear()
-            editor2.apply()
             val intent = Intent(this, AddEditProfile::class.java)
             startActivity(intent)
         }
@@ -178,7 +171,7 @@ class  LoginActivity : AppCompatActivity() {
                             MotionToast.SHORT_DURATION,
                             ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
                         val moveHome = Intent( this@LoginActivity, HomeActivity::class.java)
-                        var editor: SharedPreferences.Editor = sharedPreferences!!.edit()
+                        var editor: SharedPreferences.Editor = sharedPreferences2!!.edit()
                         editor.putString("id", userobj.getInt("id").toString())
                         editor.apply()
                         startActivity(moveHome)

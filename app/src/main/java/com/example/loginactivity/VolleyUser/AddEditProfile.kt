@@ -67,8 +67,7 @@ class AddEditProfile : AppCompatActivity() {
         val btnSave = binding.btnSave
         val tvLogo = binding.tvLogo
 
-        val id = sharedPreferences!!.getString("id","")
-//      Toast.makeText(this@AddEditProfile,id,Toast.LENGTH_SHORT).show()
+        val id = sharedPreferences2!!.getString("id","")
         if(id == ""){
             tvLogo.setText("Sign Up")
             btnSave.setOnClickListener {
@@ -87,8 +86,6 @@ class AddEditProfile : AppCompatActivity() {
         setLoading(true)
         val stringRequest: StringRequest =
             object : StringRequest(Method.GET, UserApi.GET_BY_ID_URL + id, Response.Listener { response ->
-//                val gson = Gson()
-//                val profile = gson.fromJson(response, Profile::class.java)
 
                 var joUser = JSONObject(response.toString())
                 val userdata = joUser.getJSONObject("data")

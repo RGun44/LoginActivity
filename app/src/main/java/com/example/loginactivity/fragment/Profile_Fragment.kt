@@ -85,14 +85,14 @@ class Profile_Fragment : Fragment() {
     private fun setProfile(id: Long){
         val stringRequest: StringRequest =
             object : StringRequest(Method.GET, UserApi.GET_BY_ID_URL + id, Response.Listener { response ->
-                val gson = Gson()
-                val profile = gson.fromJson(response, Profile::class.java)
+                var joUser = JSONObject(response.toString())
+                val userdata = joUser.getJSONObject("data")
 
-                username!!.setText(profile.username)
-                password!!.setText(profile.password)
-                email!!.setText(profile.email)
-                phonenumber!!.setText(profile.phonenumber)
-                birthdate!!.setText(profile.birthdate)
+                username!!.setText(userdata.getString("username"))
+                password!!.setText(userdata.getString("password"))
+                email!!.setText(userdata.getString("email"))
+                phonenumber!!.setText(userdata.getString("phonenumber"))
+                birthdate!!.setText(userdata.getString("birthdate"))
 
             },  Response.ErrorListener { error ->
                 try{
