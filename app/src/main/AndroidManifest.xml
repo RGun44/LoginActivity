@@ -30,7 +30,21 @@
         android:theme="@style/Theme.LoginActivity"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".VolleyDonasi.MainDonasiActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
 
+        <activity
+            android:name=".VolleyDonasi.AddEditDonasiActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".VolleyDriver.MainDriverActivity"
             android:exported="false">

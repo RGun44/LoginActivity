@@ -8,7 +8,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
-        android:layout_height="240dp"
+        android:layout_height="180dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
@@ -24,7 +24,7 @@
             android:layout_width="93dp"
             android:layout_height="96dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             app:tint="#181818"
             android:src="@drawable/img" />
 
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="120dp"
             android:backgroundTint="#7FB77E"
             android:text="Kirim Paket" />
 
@@ -42,9 +42,9 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
-        android:layout_height="240dp"
+        android:layout_height="180dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="220dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="#eeeeee"
         app:cardCornerRadius="10dp"
@@ -58,7 +58,7 @@
             android:layout_width="93dp"
             android:layout_height="96dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             app:tint="#181818"
             android:src="@drawable/img" />
 
@@ -68,9 +68,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="120dp"
             android:backgroundTint="#7FB77E"
             android:text="Tambah Driver" />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="410dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="#eeeeee"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView23"
+            android:layout_width="93dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            app:tint="#181818"
+            android:src="@drawable/img" />
+
+
+        <Button
+            android:id="@+id/btnEdit3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="120dp"
+            android:backgroundTint="#7FB77E"
+            android:text="Tambah Donasi" />
 
     </androidx.cardview.widget.CardView>
 
