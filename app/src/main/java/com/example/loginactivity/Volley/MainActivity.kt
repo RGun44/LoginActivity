@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
         queue!!.add(stringRequest)
     }
 
-    fun deletePaket(id: String) {
+    fun deletePaket(id: Int) {
         setLoading(true)
         val stringRequest: StringRequest = object :
             StringRequest(Method.DELETE, PaketApi.DELETE_URL + id, Response.Listener { response ->

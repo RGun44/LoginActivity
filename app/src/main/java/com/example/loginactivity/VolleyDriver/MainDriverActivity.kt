@@ -19,7 +19,6 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.loginactivity.R
 import com.example.loginactivity.Volley.*
-import com.example.loginactivity.Volley.MainActivity.Companion.LAUNCH_ADD_ACTIVITY
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import org.json.JSONObject
@@ -129,7 +128,7 @@ class MainDriverActivity : AppCompatActivity() {
         queue!!.add(stringRequest)
     }
 
-    fun deleteDriver(id: String) {
+    fun deleteDriver(id: Int) {
         setLoading(true)
         val stringRequest: StringRequest = object :
             StringRequest(Method.DELETE, DriverApi.DELETE_URL + id, Response.Listener { response ->

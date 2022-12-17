@@ -1,6 +1,5 @@
 package com.example.loginactivity.VolleyDonasi
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,7 +19,6 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.loginactivity.R
 import com.example.loginactivity.Volley.*
-import com.example.loginactivity.VolleyDonasi.AddEditDonasiActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import org.json.JSONObject
@@ -134,7 +132,7 @@ class MainDonasiActivity : AppCompatActivity() {
         queue!!.add(stringRequest)
     }
 
-    fun deleteDonasi(id: String) {
+    fun deleteDonasi(id: Int) {
         setLoading(true)
         val stringRequest: StringRequest = object :
             StringRequest(Method.DELETE, DonasiApi.DELETE_URL + id, Response.Listener { response ->

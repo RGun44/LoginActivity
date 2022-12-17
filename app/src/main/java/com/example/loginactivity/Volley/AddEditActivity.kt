@@ -57,8 +57,8 @@ class AddEditActivity : AppCompatActivity() {
         btnCancel.setOnClickListener{finish() }
         val btnSave = findViewById<Button>(R.id.btn_save)
         val tvTitle =findViewById<TextView>(R.id.tv_title)
-        val id = intent.getLongExtra("id", -1)
-        if(id== -1L){
+        val id = intent.getIntExtra("id", -1)
+        if(id== -1){
             tvTitle.setText("Tambah Paket")
             btnSave.setOnClickListener { createPaket() }
         }else{
@@ -77,19 +77,18 @@ class AddEditActivity : AppCompatActivity() {
 
     }
 
-    private fun getPaketById(id: Long){
+    private fun getPaketById(id: Int){
         // Fungsi untuk menampilkan data paket berdasarkan id
         setLoading(true)
         val stringRequest: StringRequest =
             object : StringRequest(Method.GET, PaketApi.GET_BY_ID_URL + id, Response.Listener { response ->
-                val gson = Gson()
-                val paket = gson.fromJson(response, Paket::class.java)
+                var jo = JSONObject(response.toString())
+                val paket = jo.getJSONObject("data")
 
-                etId!!.setText(paket.id)
-                etDaerahAsal!!.setText(paket.daerah_asal)
-                etDaerahTujuan!!.setText(paket.daerah_tujuan)
-                etBeratPaket!!.setText(paket.berat_paket)
-                edKecepatan!!.setText(paket.kecepatan)
+                etDaerahAsal!!.setText(paket.getString("daerah_asal"))
+                etDaerahTujuan!!.setText(paket.getString("daerah_tujuan"))
+                etBeratPaket!!.setText(paket.getString("berat_paket"))
+                edKecepatan!!.setText(paket.getString("kecepatan"))
                 setExposedDropDownMenu()
 
                 MotionToast.createToast(this,
@@ -145,7 +144,7 @@ class AddEditActivity : AppCompatActivity() {
         } else {
 
             val paket = Paket(
-                etId!!.text.toString(),
+                0,
                 etDaerahAsal!!.text.toString(),
                 etDaerahTujuan!!.text.toString(),
                 etBeratPaket!!.text.toString(),
@@ -220,11 +219,11 @@ class AddEditActivity : AppCompatActivity() {
     }
 
 
-    private fun updatePaket(id: Long){
+    private fun updatePaket(id: Int){
         setLoading(true)
 
         val paket = Paket(
-            etId!!.text.toString(),
+            0,
             etDaerahAsal!!.text.toString(),
             etDaerahTujuan!!.text.toString(),
             etBeratPaket!!.text.toString(),

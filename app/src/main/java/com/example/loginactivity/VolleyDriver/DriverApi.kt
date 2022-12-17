@@ -2,7 +2,7 @@ package com.example.loginactivity.VolleyDriver
 
 class DriverApi {
     companion object{
-        val BASE_URL ="http://192.168.100.13/paketinDBLaravel/public/api/"
+        val BASE_URL ="http://192.168.125.36/paketinDBLaravel/public/api/"
         val GET_ALL_URL = BASE_URL + "driver/"
         val GET_BY_ID_URL = BASE_URL + "driver/"
         val ADD_URL = BASE_URL + "driver"

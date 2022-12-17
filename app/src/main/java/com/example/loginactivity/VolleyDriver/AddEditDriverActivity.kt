@@ -48,8 +48,8 @@ class AddEditDriverActivity : AppCompatActivity() {
         btnCancel.setOnClickListener{finish() }
         val btnSave = findViewById<Button>(R.id.btn_save)
         val tvTitle =findViewById<TextView>(R.id.tv_title)
-        val id = intent.getLongExtra("id", -1)
-        if(id== -1L){
+        val id = intent.getIntExtra("id", -1)
+        if(id== -1){
             tvTitle.setText("Tambah Driver")
             btnSave.setOnClickListener { createDriver() }
         }else{
@@ -60,19 +60,21 @@ class AddEditDriverActivity : AppCompatActivity() {
         }
     }
 
-    private fun getDriverById(id: Long){
+    private fun getDriverById(id: Int){
         // Fungsi untuk menampilkan data driver berdasarkan id
         setLoading(true)
         val stringRequest: StringRequest =
             object : StringRequest(Method.GET, DriverApi.GET_BY_ID_URL + id, Response.Listener { response ->
-                val gson = Gson()
-                val driver = gson.fromJson(response, Driver::class.java)
 
-                etId!!.setText(driver.id)
-                etnamaDriver!!.setText(driver.nama_driver)
-                etusiaDriver!!.setText(driver.usia_driver)
-                etnoTelp!!.setText(driver.noTelp)
-                edAlamat!!.setText(driver.alamat)
+
+                var jo = JSONObject(response.toString())
+                val driver = jo.getJSONObject("data")
+
+                etnamaDriver!!.setText(driver.getString("nama_driver"))
+                etusiaDriver!!.setText(driver.getString("usia_driver"))
+                etnoTelp!!.setText(driver.getString("noTelp"))
+                edAlamat!!.setText(driver.getString("alamat"))
+
 
                 MotionToast.createToast(this,
                     "Hurray Berhasil 😍",
@@ -127,7 +129,7 @@ class AddEditDriverActivity : AppCompatActivity() {
         } else {
 
             val driver = Driver(
-               etId!!.text.toString(),
+                0,
                 etnamaDriver!!.text.toString(),
                 etusiaDriver!!.text.toString(),
                 etnoTelp!!.text.toString(),
@@ -201,11 +203,11 @@ class AddEditDriverActivity : AppCompatActivity() {
         setLoading(false)
     }
 
-    private fun updateDriver(id: Long){
+    private fun updateDriver(id: Int){
         setLoading(true)
 
         val driver = Driver(
-            etId!!.text.toString(),
+            id,
             etnamaDriver!!.text.toString(),
             etusiaDriver!!.text.toString(),
             etnoTelp!!.text.toString(),

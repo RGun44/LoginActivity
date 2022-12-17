@@ -44,7 +44,7 @@ class PaketAdapter(private var paketList: List<Paket>,context: Context):
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val paket = filteredPaketList[position]
-        holder.tvId.text = paket.id
+
         holder.tvDaerahAsal.text = paket.daerah_asal
         holder.tvDaerahTujuan.text = paket.daerah_tujuan
         holder.tvBeratPaket.text = paket.berat_paket

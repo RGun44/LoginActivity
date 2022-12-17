@@ -47,8 +47,8 @@ class AddEditDonasiActivity : AppCompatActivity() {
         btnCancel.setOnClickListener{finish() }
         val btnSave = findViewById<Button>(R.id.btn_save1)
         val tvTitle =findViewById<TextView>(R.id.tv_titleDonasi)
-        val id = intent.getLongExtra("id", -1)
-        if(id== -1L){
+        val id = intent.getIntExtra("id", -1)
+        if(id== -1){
             tvTitle.setText("Tambah Donasi")
             btnSave.setOnClickListener { createDonasi() }
         }else{
@@ -60,19 +60,18 @@ class AddEditDonasiActivity : AppCompatActivity() {
 
     }
 
-    private fun getDonasiById(id: Long){
+    private fun getDonasiById(id: Int){
         // Fungsi untuk menampilkan data donasi berdasarkan id
         setLoading(true)
         val stringRequest: StringRequest =
             object : StringRequest(Method.GET, DonasiApi.GET_BY_ID_URL + id, Response.Listener { response ->
-                val gson = Gson()
-                val donasi = gson.fromJson(response, Donasi::class.java)
+                var jo = JSONObject(response.toString())
+                val donasi = jo.getJSONObject("data")
 
-                etId!!.setText(donasi.id)
-                etnamaDonatur!!.setText(donasi.nama_Donatur)
-                etjenisDonasi!!.setText(donasi.jenis_donasi)
-                etnominalDonasi!!.setText(donasi.nominal_Donasi)
-                etPembayaran!!.setText(donasi.pembayaran)
+                etnamaDonatur!!.setText(donasi.getString("nama_Donatur"))
+                etjenisDonasi!!.setText(donasi.getString("jenis_donasi"))
+                etnominalDonasi!!.setText(donasi.getString("nominal_Donasi"))
+                etPembayaran!!.setText(donasi.getString("pembayaran"))
 
                 MotionToast.createToast(this,
                     "Hurray Berhasil 😍",
@@ -127,7 +126,7 @@ class AddEditDonasiActivity : AppCompatActivity() {
         } else {
 
             val donasi = Donasi(
-                etId!!.text.toString(),
+                0,
                 etnamaDonatur!!.text.toString(),
                 etjenisDonasi!!.text.toString(),
                 etnominalDonasi!!.text.toString(),
@@ -202,11 +201,11 @@ class AddEditDonasiActivity : AppCompatActivity() {
     }
 
 
-    private fun updateDonasi(id: Long){
+    private fun updateDonasi(id: Int){
         setLoading(true)
 
         val donasi = Donasi(
-            etId!!.text.toString(),
+            0,
             etnamaDonatur!!.text.toString(),
             etjenisDonasi!!.text.toString(),
             etnominalDonasi!!.text.toString(),
