@@ -236,7 +236,9 @@ class AddEditProfile : AppCompatActivity() {
             StringRequest(Method.PUT, UserApi.UPDATE_URL + id, Response.Listener{ response ->
                 val gson = Gson()
 
-                val profile = gson.fromJson(response, Profile::class.java)
+                val jsonObject = JSONObject(response)
+                val jsonData = jsonObject.getJSONObject("data")
+                val profile = gson.fromJson(jsonData.toString(), Profile::class.java)
 
                 if(profile != null) {
                     var joUser = JSONObject(response.toString())

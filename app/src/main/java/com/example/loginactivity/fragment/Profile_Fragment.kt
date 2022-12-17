@@ -63,7 +63,7 @@ class Profile_Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         queue = Volley.newRequestQueue(requireActivity())
-        sharedPreferences = activity?.getSharedPreferences("myPref", Context.MODE_PRIVATE)
+        sharedPreferences = activity?.getSharedPreferences("login", Context.MODE_PRIVATE)
 
         username = binding.tvname
         password = binding.tvpassword
@@ -71,7 +71,7 @@ class Profile_Fragment : Fragment() {
         phonenumber = binding.tvphonenumber
         birthdate = binding.tvbirthdate
 
-        val id = sharedPreferences?.getString("id",null)
+        val id = sharedPreferences?.getString("id","")
         setProfile(id!!.toLong())
 
         btnEdit.setOnClickListener(){
@@ -85,18 +85,14 @@ class Profile_Fragment : Fragment() {
     private fun setProfile(id: Long){
         val stringRequest: StringRequest =
             object : StringRequest(Method.GET, UserApi.GET_BY_ID_URL + id, Response.Listener { response ->
-//                val gson = Gson()
-//                val profile = gson.fromJson(response, Profile::class.java)
+                val gson = Gson()
+                val profile = gson.fromJson(response, Profile::class.java)
 
-                var joUser = JSONObject(response.toString())
-                val userdata = joUser.getJSONObject("data")
-
-                username!!.setText(userdata.getString("username"))
-                password!!.setText(userdata.getString("password"))
-                email!!.setText(userdata.getString("email"))
-                phonenumber!!.setText(userdata.getString("phonenumber"))
-                birthdate!!.setText(userdata.getString("birthdate"))
-
+                username!!.setText(profile.username)
+                password!!.setText(profile.password)
+                email!!.setText(profile.email)
+                phonenumber!!.setText(profile.phonenumber)
+                birthdate!!.setText(profile.birthdate)
 
             },  Response.ErrorListener { error ->
                 try{
