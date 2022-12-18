@@ -85,6 +85,9 @@ class  LoginActivity : AppCompatActivity() {
         val btnRegistrasi = binding.btnRegistrasi
 
         btnRegistrasi.setOnClickListener {
+            var editor: SharedPreferences.Editor = sharedPreferences2!!.edit()
+            editor.clear().apply()
+
             val intent = Intent(this, AddEditProfile::class.java)
             startActivity(intent)
         }

@@ -3,12 +3,14 @@ package com.example.loginactivity.VolleyUser
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
@@ -25,6 +27,7 @@ import org.json.JSONObject
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 import java.nio.charset.StandardCharsets
+
 
 class AddEditProfile : AppCompatActivity() {
 
@@ -155,7 +158,7 @@ class AddEditProfile : AppCompatActivity() {
                     val gson = Gson()
                     val profile = gson.fromJson(response, Profile::class.java)
 
-                    if(profile!=null)
+                    if(profile!=null){
                         MotionToast.createToast(this,
                             "Register Succes",
                             "Selamat Datang " + etUsername?.text.toString(),
@@ -163,6 +166,8 @@ class AddEditProfile : AppCompatActivity() {
                             MotionToast.GRAVITY_BOTTOM,
                             MotionToast.SHORT_DURATION,
                             ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
+                    }
+
 
                     val strName: String =
                         etUsername?.text.toString().trim()
@@ -170,9 +175,11 @@ class AddEditProfile : AppCompatActivity() {
                         etPassword?.text.toString().trim()
                     val editor: SharedPreferences.Editor =
                         sharedPreferences!!.edit()
+                    editor.clear()
                     editor.putString(name, etUsername!!.text.toString())
                     editor.putString(password, etPassword!!.text.toString())
                     editor.apply()
+
                     val returnIntent = Intent(this@AddEditProfile, LoginActivity::class.java)
 
                     setResult(RESULT_OK, returnIntent)
@@ -298,4 +305,33 @@ class AddEditProfile : AppCompatActivity() {
         }
     }
     fun CharSequence?.isValidEmail() = !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+
+    private fun sendEmail(recipient: String, subject: String, message: String) {
+        /*ACTION_SEND action to launch an email client installed on your Android device.*/
+        val mIntent = Intent(Intent.ACTION_SEND)
+        /*To send an email you need to specify mailto: as URI using setData() method
+        and data type will be to text/plain using setType() method*/
+        mIntent.data = Uri.parse("mailto:")
+        mIntent.type = "text/plain"
+        // put recipient email in intent
+        /* recipient is put as array because you may wanna send email to multiple emails
+           so enter comma(,) separated emails, it will be stored in array*/
+        mIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(recipient))
+        //put the Subject in the intent
+        mIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
+        //put the message in the intent
+        mIntent.putExtra(Intent.EXTRA_TEXT, message)
+
+
+        try {
+            //start email intent
+            startActivity(Intent.createChooser(mIntent, "Choose Email Client..."))
+        }
+        catch (e: Exception){
+            //if any thing goes wrong for example no email client application or any exception
+            //get and show exception message
+            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+        }
+
+    }
 }
